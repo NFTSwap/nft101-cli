@@ -81,9 +81,9 @@ export default class extends Page {
 						<div className="md-cell md-cell--5 md-cell--1-desktop-offset collectible-detail-desktop-col-2">
 							<div>
 								<div><a href="https://superrare.co/artwork-v2/2021-17575#img1"><img className="collectible-detail-image"
-											src="/test/Authentic Digital Art - 2021 _ SuperRare_files/2021.jpg" /></a><a
+											src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/2021.jpg" /></a><a
 										href="https://superrare.co/artwork-v2/2021-17575#_" id="img1" className="lightbox "><img
-											src="/test/Authentic Digital Art - 2021 _ SuperRare_files/2021.jpg" /></a>
+											src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/2021.jpg" /></a>
 								</div>
 							</div>
 						</div>
@@ -91,7 +91,7 @@ export default class extends Page {
 							<div className="collectible-account-details">
 								<div className="account-details-container">
 									<div className="md-inline-block md-avatar md-avatar--default account-details-avatar"><img
-											src="/test/Authentic Digital Art - 2021 _ SuperRare_files/WWS.jpg" className="md-avatar-img" /></div>
+											src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/WWS.jpg" className="md-avatar-img" /></div>
 									<div>
 										<div className="account-details-username-container"><a className="account-details-username"
 												href="https://superrare.co/wws">@wws</a><br/></div><span
@@ -212,7 +212,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/fate-17586">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard.jpg"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard.jpg"
 														alt="Fate - undefined" />
 												</div>
 											</div>
@@ -221,7 +221,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/new-born-17414">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard(1).jpg"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard(1).jpg"
 														alt="NEW BORN - undefined" />
 												</div>
 											</div>
@@ -230,7 +230,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/digital-mountain-17016">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard.png"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard.png"
 														alt="Digital mountain - undefined" />
 												</div>
 											</div>
@@ -239,7 +239,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/liquid-modernity-17015">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard.gif"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard.gif"
 														alt="Liquid modernity - undefined" />
 												</div>
 											</div>
@@ -249,7 +249,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/antistress-16659">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard(2).jpg"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard(2).jpg"
 														alt="Antistress - undefined" />
 												</div>
 											</div>
@@ -259,7 +259,7 @@ export default class extends Page {
 									<div className="col-md-2 col-xs-4 "><a href="https://superrare.co/artwork-v2/satoshis-in-oil-16629">
 											<div className="square-box">
 												<div className="square-content"><img className="grid-img"
-														src="/test/Authentic Digital Art - 2021 _ SuperRare_files/standard(3).jpg"
+														src="/test/tmp/Authentic Digital Art - 2021 _ SuperRare_files/standard(3).jpg"
 														alt="Satoshis in oil - undefined" />
 												</div>
 											</div>
