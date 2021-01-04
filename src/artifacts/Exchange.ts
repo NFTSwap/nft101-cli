@@ -29,5 +29,5 @@ export interface Asset {
 }
 
 export default interface Exchange {
-	assetOf(id: AssetID): Asset;
+	assetOf(id: AssetID): Promise<Asset>;
 }
