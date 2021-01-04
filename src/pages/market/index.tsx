@@ -33,7 +33,7 @@ import Nav from '../../ctr/nav';
 import Footer from '../../ctr/footer';
 import './index.scss';
 
-import test from '../../web3/index_test'; test();
+import test from '../../web3_test'; test();
 
 
 export default class extends Page {

@@ -28,47 +28,40 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from './index';
-import ccl from '../../test/ccl';
-import artifacts from '../artifacts';
+import buffer from 'somes/buffer';
+import { Web3Z } from 'web3z';
+import { TransactionQueue } from 'web3z/queue';
 
-export default async function _test() {
+export class Web3IMPL extends Web3Z {
 
-	var mask = web3.metaMask;
+	private _metaMask: any;
+	private _txQueue: TransactionQueue = new TransactionQueue(this);
 
-	var [from] = await mask.request({ method: 'eth_requestAccounts' });
+	get metaMask() {
+		if (!this._metaMask) {
+			this._metaMask = (globalThis as any).ethereum;
+			// TODO .. check _metaMask
+			var currentChainId = this._metaMask.chainId;
+			console.log('currentChainId', currentChainId);
+		}
+		return this._metaMask;
+	}
 
-	console.log('eth_requestAccounts', from);
+	getProvider() {
+		return this.metaMask;
+	}
 
-	console.log('currentProvider', web3.currentProvider);
+	sign() {
+		return {
+			signature: buffer.alloc(64),
+			recovery: 0,
+		}
+	}
 
-	console.log('web3.getBlockNumber', await web3.eth.getBlockNumber());
-
-	var accounts = await web3.eth.getAccounts();
-
-	console.log('defaultAccount', accounts);
-
-	var happy = ccl.license_types.happy();
-
-	var license_types = await happy.get('11100000000019713D057');
-
-	console.log('license_types', license_types);
-
-	var ex = artifacts.exchange.happy();
-
-	var ass = await ex.assetOf({ token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', tokenId: '0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529' })
-
-	console.log(ass);
-
-	// web3.eth.getTransactionCount(account, 'latest');
-
-	// var r = await mask.request({
-	// 	method: 'personal_sign',
-	// 	params: [from, 'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
-	// });
-
-	// var r = await web3.eth.personal.sign(
-	// 	'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.', from, '');
-	// console.log('personal_sign', r);
+	get queue() {
+		return this._txQueue;
+	}
 
 }
+
+export default new Web3IMPL
