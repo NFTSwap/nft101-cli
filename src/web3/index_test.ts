@@ -28,18 +28,47 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from './web3';
+import web3 from './index';
+import ccl from '../../test/ccl';
+import artifacts from '../artifacts';
 
-export default async function test2() {
+export default async function _test() {
 
 	var mask = web3.metaMask;
 
 	var [from] = await mask.request({ method: 'eth_requestAccounts' });
 
-	var r = await mask.request({
-		method: 'personal_sign',
-		params: [from, 'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
-	});
+	console.log('eth_requestAccounts', from);
 
-	console.log('personal_sign', r);
+	console.log('currentProvider', web3.currentProvider);
+
+	console.log('web3.getBlockNumber', await web3.eth.getBlockNumber());
+
+	var accounts = await web3.eth.getAccounts();
+
+	console.log('defaultAccount', accounts);
+
+	var happy = ccl.license_types.happy();
+
+	var license_types = await happy.get('11100000000019713D057');
+
+	console.log('license_types', license_types);
+
+	var ex = artifacts.exchange.happy();
+
+	var ass = await ex.assetOf({ token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', tokenId: '0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529' })
+
+	console.log(ass);
+
+	// web3.eth.getTransactionCount(account, 'latest');
+
+	// var r = await mask.request({
+	// 	method: 'personal_sign',
+	// 	params: [from, 'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
+	// });
+
+	// var r = await web3.eth.personal.sign(
+	// 	'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.', from, '');
+	// console.log('personal_sign', r);
+
 }

@@ -28,15 +28,42 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-var _metaMask: any = null;
+import buffer from 'somes/buffer';
+import {
+	Web3Z, EnqueueExecArg,
+	EnqueueOptions, TransactionQueue,
+} from 'web3z';
 
-export default {
+export class Web3IMPL extends Web3Z {
+
+	private _metaMask: any;
+	private _txQueue: TransactionQueue = new TransactionQueue(this);
+
 	get metaMask() {
-		if (!_metaMask) {
-			_metaMask = (globalThis as any).ethereum;
-			var currentChainId = _metaMask.chainId;
+		if (!this._metaMask) {
+			this._metaMask = (globalThis as any).ethereum;
+			// TODO .. check _metaMask
+			var currentChainId = this._metaMask.chainId;
 			console.log('currentChainId', currentChainId);
 		}
-		return _metaMask;
+		return this._metaMask;
 	}
+
+	getProvider() {
+		return this.metaMask;
+	}
+
+	sign() {
+		return {
+			signature: buffer.alloc(64),
+			recovery: 0,
+		}
+	}
+
+	enqueue<R>(exec: (arg: EnqueueExecArg)=>Promise<R>, options?: EnqueueOptions): Promise<R> {
+		return this._txQueue.enqueue(exec, options);
+	}
+
 }
+
+export default new Web3IMPL

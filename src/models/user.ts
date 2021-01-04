@@ -28,7 +28,7 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from './web3';
+import web3 from '../web3';
 
 export async function login() {
 
