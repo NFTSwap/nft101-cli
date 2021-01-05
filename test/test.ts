@@ -1,4 +1,6 @@
 
-import test_web3 from './test-web3';
+require('./test-sol').default();
+// require('./test-tx').default();
+// require('./test-metamask').default();
 
-test_web3();
+export {}

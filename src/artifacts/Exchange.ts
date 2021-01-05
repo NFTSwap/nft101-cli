@@ -1,9 +1,9 @@
 /**
- * @copyright © 2020 Copyright ccl
+ * @copyright © 2021 Copyright hardchain
  * @date 2021-01-04
  */
 
-import {TransactionReceipt} from 'web3z';
+import {TransactionPromise} from 'web3z';
 import {Address,Uint256,Bytes,Bytes4} from '../solidity_types'
 import * as json from './Exchange.json';
 
@@ -57,17 +57,17 @@ export default interface Exchange {
 	lastOrderId(): Promise<Uint256>;
 	ledger(): Promise<Address>;
 	owner(): Promise<Address>;
-	renounceOwnership(): Promise<void>;
+	renounceOwnership(): TransactionPromise;
 	sellingOrders(orderId: Uint256): Promise<SellStore>
 	teamAddress(): Promise<Address>;
-	transferOwnership(newOwner: Address): Promise<void>;
+	transferOwnership(newOwner: Address): TransactionPromise;
 	votePool(): Promise<Address>;
-	initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): Promise<void>;
-	withdraw(asset: AssetID): Promise<void>;
-	sell(order: SellOrder): Promise<Uint256>;
-	buy(orderId: Uint256): Promise<TransactionReceipt>;
-	tryEndBid(orderId: Uint256): Promise<void>;
-	onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): Promise<Bytes4>;
+	initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): TransactionPromise;
+	withdraw(asset: AssetID): TransactionPromise;
+	sell(order: SellOrder): TransactionPromise;
+	buy(orderId: Uint256): TransactionPromise;
+	tryEndBid(orderId: Uint256): TransactionPromise;
+	onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): TransactionPromise;
 	getSellOrder(orderId: Uint256): Promise<{status: number; lifespan: Uint256; minPrice: Uint256}>;
 	assetOf(asset: AssetID): Promise<Asset>;
 }
