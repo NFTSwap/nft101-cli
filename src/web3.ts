@@ -28,7 +28,6 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import buffer from 'somes/buffer';
 import { Web3Z } from 'web3z';
 import { TransactionQueue } from 'web3z/queue';
 
@@ -47,19 +46,12 @@ export class Web3IMPL extends Web3Z {
 		return this._metaMask;
 	}
 
-	getProvider() {
-		return this.metaMask;
-	}
-
-	sign() {
-		return {
-			signature: buffer.alloc(64),
-			recovery: 0,
-		}
-	}
-
 	get queue() {
 		return this._txQueue;
+	}
+
+	getProvider() {
+		return this.metaMask;
 	}
 
 }
