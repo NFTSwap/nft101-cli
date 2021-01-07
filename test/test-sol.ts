@@ -28,19 +28,12 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from '../src/web3';
 import artifacts from '../src/artifacts';
 
 export default async function() {
-	console.log('currentProvider', web3.currentProvider);
-	console.log('web3.getBlockNumber', await web3.eth.getBlockNumber());
 
 	var ex = artifacts.exchange.happy();
 
-	console.log('exchange.assetOf', await ex.assetOf({
-		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
-		tokenId: BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'),
-	}));
 	console.log('exchange.ORDER_MAX_LIFESPAN', await ex.ORDER_MAX_LIFESPAN());
 	console.log('exchange.ORDER_MIN_LIFESPAN', await ex.ORDER_MIN_LIFESPAN());
 	console.log('exchange.feePlan', await ex.feePlan());
@@ -53,6 +46,10 @@ export default async function() {
 	console.log('exchange.votePool', await ex.votePool());
 	console.log('exchange.getSellOrder', await ex.getSellOrder(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
 	console.log('exchange.teamAddress', await ex.teamAddress());
+	console.log('exchange.assetOf', await ex.assetOf({
+		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
+		tokenId: BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'),
+	}));
 
 	var fee_plan = artifacts.fee_plan.happy();
 
@@ -64,10 +61,7 @@ export default async function() {
 	// console.log('fee_plan.renounceOwnership', await fee_plan.renounceOwnership());
 	// console.log('fee_plan.transferOwnership', await fee_plan.transferOwnership());
 	// console.log('fee_plan.initialize', await fee_plan.initialize('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
-	console.log('fee_plan.formula', await fee_plan.formula(
-		BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'), true,
-		BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')
-	));
+	console.log('fee_plan.formula', await fee_plan.formula(BigInt('0x1ff00'), true, BigInt('0x100')));
 
 	var ledger = artifacts.ledger.happy();
 
@@ -92,4 +86,33 @@ export default async function() {
 	// lock(to: Address, lockId: Uint256): TransactionPromise;
 	// unlock(holder: Address, lockId: Uint256, withdrawNow: boolean): TransactionPromise;
 	console.log('ledger.lockedItems', await ledger.lockedItems('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+
+	var vote_pool = artifacts.vote_pool.happy();
+
+	console.log('vote_pool.owner', await vote_pool.owner());
+	// initialize(admin: Address): TransactionPromise;
+	// renounceOwnership(): TransactionPromise;
+	// transferOwnership(): TransactionPromise;
+	console.log('vote_pool.MAX_PENDING_VOTES', await vote_pool.MAX_PENDING_VOTES());
+	console.log('vote_pool.MAX_WEIGTH', await vote_pool.MAX_WEIGTH());
+	console.log('vote_pool.MIN_WEIGTH', await vote_pool.MIN_WEIGTH());
+	console.log('vote_pool.VOTE_LOCKTIMES', await vote_pool.VOTE_LOCKTIMES());
+	console.log('vote_pool.Voteing', await vote_pool.Voteing());
+	console.log('vote_pool.exchange', await vote_pool.exchange());
+	console.log('vote_pool.lastVoteId', await vote_pool.lastVoteId());
+	console.log('vote_pool.ledger', await vote_pool.ledger());
+	console.log('vote_pool.ordersById', await vote_pool.ordersById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	console.log('vote_pool.votesById', await vote_pool.votesById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	// votesByVoter(account: Address, _: Uint256): Promise<Uint256[]>;
+	// init(exchange_: Address, ledger_: Address): TransactionPromise;
+	// marginVote(orderId: Uint256): TransactionPromise;
+	// cancelVote(voteId: Uint256): TransactionPromise;
+	// subCommission(orderId: Uint256): TransactionPromise;
+	// settle(holder: Address): TransactionPromise;
+	console.log('vote_pool.orderTotalVotes', await vote_pool.orderTotalVotes(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	console.log('vote_pool.canRelease', await vote_pool.canRelease('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	// tryRelease(holder: Address): TransactionPromise;
+	console.log('vote_pool.unlockAllowed', await vote_pool.unlockAllowed(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'), '0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('vote_pool.allVotes', await vote_pool.allVotes('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+
 }

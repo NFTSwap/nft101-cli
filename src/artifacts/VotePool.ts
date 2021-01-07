@@ -9,7 +9,7 @@ import * as json from './VotePool.json';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x9Cf577fe84d6e89A594980C23Fdc328e6adEC8f0';
+export const contractAddress = '0x5D22F214F6eB56B2928269472EB59AdAC4b90ea3';
 
 //投票质押信息，用于记录每一张投票信息
 export interface Vote {
@@ -49,7 +49,7 @@ export default interface VotePool {
 	ledger(): Promise<Address>;
 	ordersById(id: Uint256): Promise<OrderSummary>;
 	votesById(id: Uint256): Promise<Vote>;
-	votesByVoter(account: Address): Promise<Uint256[]>;
+	// votesByVoter(account: Address, _: Uint256): Promise<Uint256[]>;
 	init(exchange_: Address, ledger_: Address): TransactionPromise;
 	marginVote(orderId: Uint256): TransactionPromise;
 	cancelVote(voteId: Uint256): TransactionPromise;

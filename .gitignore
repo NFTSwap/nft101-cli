@@ -8,3 +8,4 @@ package-lock.json
 nohup.out
 var
 test/tmp
+deploy.log

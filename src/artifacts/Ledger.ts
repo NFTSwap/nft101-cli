@@ -9,7 +9,7 @@ import * as json from './Ledger.json';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x942D6f5313E70f2c2911c639b3D363d43C3fD96c';
+export const contractAddress = '0xb207005eA8A4365ec6a284Bb626b20e02CaA7dE2';
 
 export default interface Ledger {
 	owner(): Promise<Address>;

@@ -4,12 +4,12 @@
  */
 
 import {TransactionPromise} from 'web3z';
-import {Address,Uint256,Bytes,Bytes4} from '../solidity_types'
+import {Address,Uint256,Bytes} from '../solidity_types'
 import * as json from './Exchange.json';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x08A8b3135256725f25b44569D6Ef44674c16A237';
+export const contractAddress = '0x15290698ceD8B316933565F14318FC524f831a6b';
 
 export interface AssetID {
 	token: Address;

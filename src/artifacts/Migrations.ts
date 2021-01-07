@@ -9,7 +9,7 @@ import * as json from './FeePlan.json';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0xC86078CA52C538E89b3Ab3b4439c01267AFF4e89';
+export const contractAddress = '0x7bBe38d875989a335366FFa7bB740102b7bf2913';
 
 export default interface FeePlan {
 	owner(): Promise<Address>;
