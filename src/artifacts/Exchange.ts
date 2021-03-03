@@ -4,7 +4,7 @@
  */
 
 import {TransactionPromise} from 'web3z';
-import {Address,Uint256,Bytes} from '../solidity_types'
+import {Address,Uint256,Bytes} from 'web3z/solidity_types'
 import * as json from './Exchange.json';
 
 export const abi = json.abi;

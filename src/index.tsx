@@ -40,6 +40,7 @@ import './assets/font.css';
 import './assets/rc.css';
 import './assets/all.css';
 import './assets/css.css';
+import './assets/all2.scss';
 
 // document.documentElement.style.fontSize = '46px';
 

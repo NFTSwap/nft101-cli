@@ -28,35 +28,45 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const routes = [
-	{
-		path: '/account',
-		page: () => import('./pages/account'),
-	},
-	{
-		path: '/details',
-		page: () => import('./pages/details'),
-	},
-	{
-		path: '/income',
-		page: () => import('./pages/income'),
-	},
-	{
-		path: [ '/', '/index' ],
-		page: () => import('./pages/index'),
-	},
-	{
-		path: '/mynft',
-		page: () => import('./pages/mynft'),
-	},
-	{
-		path: '/nft101',
-		page: () => import('./pages/nft101'),
-	},
-	{
-		path: '/sell',
-		page: () => import('./pages/sell'),
-	},
-];
+import {Page,React, Link} from 'webpkit';
+import Nav from '../../ctr/nav';
+import Footer from '../../ctr/footer';
+import './index.scss';
 
-export default routes;
+export default class extends Page {
+	
+	render() {
+		return (
+			<div className="marketplace-page app-page sell">
+				<Nav />
+
+				<div className="container">
+					<div className="row">
+						<div className="col-md-12">
+							<h1 className="marketplace__title">Sell</h1>
+						</div>
+					</div>
+
+					<div style={{textAlign: 'center'}}>
+						ERC721协约：<input ref="erc721" style={{width: '300px'}} /><br /><br />
+						ERC721资产ID：<input ref="erc721_id" style={{width: '300px'}} /><br /><br />
+						<button>转移到NFTSwap</button>
+					</div>
+
+					<div style={{textAlign: 'center'}}>
+
+						<br/><br/>
+						<h2>或</h2><br/>
+
+						将ERC721资产转移到 0x08A8b3135256725f25b44569D6Ef44674c16A237 协约<br /><br/>
+						<Link to="/mynft">转移完成去出售</Link>
+					</div>
+
+				</div>
+
+				<Footer/>
+
+			</div>
+		);
+	}
+}

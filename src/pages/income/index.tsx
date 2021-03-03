@@ -28,35 +28,31 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const routes = [
-	{
-		path: '/account',
-		page: () => import('./pages/account'),
-	},
-	{
-		path: '/details',
-		page: () => import('./pages/details'),
-	},
-	{
-		path: '/income',
-		page: () => import('./pages/income'),
-	},
-	{
-		path: [ '/', '/index' ],
-		page: () => import('./pages/index'),
-	},
-	{
-		path: '/mynft',
-		page: () => import('./pages/mynft'),
-	},
-	{
-		path: '/nft101',
-		page: () => import('./pages/nft101'),
-	},
-	{
-		path: '/sell',
-		page: () => import('./pages/sell'),
-	},
-];
+import {Page,React} from 'webpkit';
+import Nav from '../../ctr/nav';
+import Footer from '../../ctr/footer';
+import './index.scss';
 
-export default routes;
+export default class extends Page {
+
+	render() {
+		return (
+			<div className="marketplace-page app-page sell">
+				<Nav />
+
+				<div className="container">
+					<div className="row">
+						<div className="col-md-12">
+							<h1 className="marketplace__title">Income</h1>
+						</div>
+					</div>
+
+				</div>
+
+				<Footer />
+
+			</div>
+		);
+	}
+
+}

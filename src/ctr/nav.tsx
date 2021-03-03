@@ -28,7 +28,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import { ViewController, React } from 'webpkit';
+import { ViewController, React, Link } from 'webpkit';
 
 export default class extends ViewController {
 
@@ -37,37 +37,59 @@ export default class extends ViewController {
 			<div className="nav-container">
 				<div className="toolbar-nav-wrapper" style={{backgroundColor: 'rgb(255, 255, 255)'}}>
 					<header className="md-paper md-paper--2 md-toolbar md-toolbar--fixed toolbar-nav"
-						style={{boxShadow: 'none', backgroundColor: 'rgb(255, 255, 255)'}}><button type="button"
-							className="md-btn md-btn--icon md-pointer--hover md-inline-block md-btn--toolbar md-toolbar--action-left"><i
-								className="md-icon material-icons md-text--inherit">menu</i></button>
+						style={{boxShadow: 'none', backgroundColor: 'rgb(255, 255, 255)'}}>
+
+						<button type="button"
+							className="md-btn md-btn--icon md-pointer--hover md-inline-block md-btn--toolbar md-toolbar--action-left">
+							<i className="md-icon material-icons md-text--inherit">menu</i>
+						</button>
+
 						<div className="md-cell--right md-toolbar--action-right">
 							<div className="desktop-nav-container">
-								<div className="desktop-nav"><a className="desktop-nav-link home-nav-link active" href="/"
-										style={{textDecoration: 'none'}}>
-										<h3>SuperRare</h3>
-									</a>
+								<div className="desktop-nav">
+									<Link className="desktop-nav-link home-nav-link active" to="/" style={{textDecoration: 'none'}}>
+										<h3>NFTSwap</h3>
+									</Link>
 									{/* activeclassname="active" */}
-									<a className="desktop-nav-link" target="_blank" rel="noreferrer"
-										href="https://editorial.superrare.co"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Editorial</button></a><a
-										className="desktop-nav-link" href="/discover"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Discover</button></a><a
-										className="desktop-nav-link active" href="/market"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Market</button></a><a
-										className="desktop-nav-link" href="/activity"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Activity</button></a>
+									<Link className="desktop-nav-link" rel="noreferrer"
+										to="/nft101"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">NFT101</button>
+									</Link>
+									<Link
+										className="desktop-nav-link active" to="/sell"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Sell</button>
+									</Link>
+									<Link
+										className="desktop-nav-link" to="/mynft"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">MyNFT</button>
+									</Link>
+									<Link
+										className="desktop-nav-link" to="/income"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Income</button>
+									</Link>
+									{/* <Link
+										className="desktop-nav-link" to="/account"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Account</button>
+									</Link> */}
 								</div>
-								<div className="desktop-nav loggedin"><a className="desktop-nav-link notifications-link"
-										href="/chuxuewen/notifications"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block desktop-nav-profile-btn">Notifications</button></a>
-									<div className="desktop-nav-profile-btn"><i className="desktop-nav-default-avatar" data-fa-i2svg=""><svg
+
+								{/* <div className="desktop-nav loggedin">
+									<a className="desktop-nav-link notifications-link" href="/chuxuewen/notifications">
+										<button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block desktop-nav-profile-btn">Notifications</button>
+									</a>
+									<div className="desktop-nav-profile-btn">
+										<i className="desktop-nav-default-avatar" data-fa-i2svg="">
+											<svg
 												className="svg-inline--fa fa-user-circle fa-w-16" aria-hidden="true" data-prefix="fal"
 												data-icon="user-circle" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"
 												data-fa-i2svg="">
 												<path fill="currentColor"
 													d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm128 421.6c-35.9 26.5-80.1 42.4-128 42.4s-92.1-15.9-128-42.4V416c0-35.3 28.7-64 64-64 11.1 0 27.5 11.4 64 11.4 36.6 0 52.8-11.4 64-11.4 35.3 0 64 28.7 64 64v13.6zm30.6-27.5c-6.8-46.4-46.3-82.1-94.6-82.1-20.5 0-30.4 11.4-64 11.4S204.6 320 184 320c-48.3 0-87.8 35.7-94.6 82.1C53.9 363.6 32 312.4 32 256c0-119.1 96.9-216 216-216s216 96.9 216 216c0 56.4-21.9 107.6-57.4 146.1zM248 120c-48.6 0-88 39.4-88 88s39.4 88 88 88 88-39.4 88-88-39.4-88-88-88zm0 144c-30.9 0-56-25.1-56-56s25.1-56 56-56 56 25.1 56 56-25.1 56-56 56z">
 												</path>
-											</svg></i><img className=" desktop-nav--dropdown-toggle" src="https://superrare.co/static/media/ic-arrow-down.b807cb03.svg" />
+											</svg>
+										</i>
+										<img className=" desktop-nav--dropdown-toggle" src="https://superrare.co/static/media/ic-arrow-down.b807cb03.svg" />
 									</div>
 									<div className="sc-AxjAm poPni main-nav__dropdown" style={{display: 'none'}}>
 										<ul style={{listStyle: 'none', padding: '0px'}}>
@@ -81,14 +103,17 @@ export default class extends ViewController {
 											</li>
 										</ul>
 									</div>
-								</div>
+								</div> */}
+
 							</div>
 						</div>
 					</header>
 				</div>
+
 				<a className="mobile-nav-logo active" href="/">
 					<h3>SuperRare</h3>
 				</a>
+
 				<a className="mobile-nav__notifications-link" href="/chuxuewen/notifications">
 					<button type="button" className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block mobile-nav-notifications-btn border">
 						<i className="" data-fa-i2svg="">
@@ -101,6 +126,7 @@ export default class extends ViewController {
 						</i>
 					</button>
 				</a>
+
 			</div>
 		);
 	}

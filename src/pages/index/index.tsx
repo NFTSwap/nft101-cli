@@ -28,21 +28,18 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React} from 'webpkit';
+import {Page,React,Link} from 'webpkit';
+import Nav from '../../ctr/nav';
 import './index.scss';
 
 export default class extends Page<{a: number}, { a: number }> {
-	
-	state = { a: 100, b: 200 };
-
-	triggerLoad() {
-		// var A = this.state.b;
-	}
 
 	render() {
 		return (
-			<div className="index">
-				index-{this.state.a}
+			<div className="body index">
+				<Nav />
+				<h1 style={{ paddingTop: '200px'}}>欢迎使用 NFTSwap</h1> <br />
+				{/* <Link to="/nft101">Sell</Link> */}
 			</div>
 		);
 	}

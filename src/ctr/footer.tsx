@@ -32,7 +32,7 @@ import { ViewController, React } from 'webpkit';
 
 export default class extends ViewController {
 
-	render() {
+	_render() {
 		return (
 			<div className="footer-container">
 
@@ -93,6 +93,10 @@ export default class extends ViewController {
 			</div>
 
 		);
+	}
+
+	render() {
+		return null;
 	}
 
 }

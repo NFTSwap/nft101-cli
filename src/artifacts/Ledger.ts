@@ -4,7 +4,7 @@
  */
 
 import {TransactionPromise} from 'web3z';
-import {Address,Uint256, Uint8} from '../solidity_types'
+import {Address,Uint256, Uint8} from 'web3z/solidity_types'
 import * as json from './Ledger.json';
 
 export const abi = json.abi;

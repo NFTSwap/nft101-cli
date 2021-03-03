@@ -4,7 +4,7 @@
  */
 
 import {TransactionPromise} from 'web3z';
-import {Address,Uint256, Uint16} from '../solidity_types'
+import {Address,Uint256, Uint16} from 'web3z/solidity_types'
 import * as json from './VotePool.json';
 
 export const abi = json.abi;

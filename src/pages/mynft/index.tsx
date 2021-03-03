@@ -28,35 +28,50 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-const routes = [
-	{
-		path: '/account',
-		page: () => import('./pages/account'),
-	},
-	{
-		path: '/details',
-		page: () => import('./pages/details'),
-	},
-	{
-		path: '/income',
-		page: () => import('./pages/income'),
-	},
-	{
-		path: [ '/', '/index' ],
-		page: () => import('./pages/index'),
-	},
-	{
-		path: '/mynft',
-		page: () => import('./pages/mynft'),
-	},
-	{
-		path: '/nft101',
-		page: () => import('./pages/nft101'),
-	},
-	{
-		path: '/sell',
-		page: () => import('./pages/sell'),
-	},
-];
+import {Page,React} from 'webpkit';
+import Nav from '../../ctr/nav';
+import Footer from '../../ctr/footer';
+import NFTItem from '../../ctr/nft_item';
+import './index.scss';
 
-export default routes;
+export default class extends Page {
+	
+	renderContent() {
+		return (
+			<div className="row new-grid-row-margin-l-r">
+				<NFTItem />
+			</div>
+		);
+	}
+
+	render() {
+		return (
+			<div className="marketplace-page app-page mynft">
+
+				<Nav />
+
+				<div className="container">
+					<div className="row">
+						<div className="col-md-12">
+							<h1 className="marketplace__title">MYNFT</h1>
+						</div>
+					</div>
+
+					{/* {this.renderSettings()} */}
+
+					{/* <div className="row">
+						<hr style={{ marginBottom: '48px' }} />
+					</div> */}
+
+					{this.renderContent()}
+
+					{/* {this.renderPaging()} */}
+
+				</div>
+
+				<Footer />
+
+			</div>
+		);
+	}
+}

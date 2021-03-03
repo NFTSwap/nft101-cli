@@ -635,26 +635,26 @@ export default class extends Page {
 
 	render() {
 		return (
-			<div className="marketplace-page app-page">
+			<div className="marketplace-page app-page nft101">
 
 				<Nav />
 
 				<div className="container">
 					<div className="row">
 						<div className="col-md-12">
-							<h1 className="marketplace__title">Market</h1>
+							<h1 className="marketplace__title">NFT101</h1>
 						</div>
 					</div>
 
-					{this.renderSettings()}
+					{/* {this.renderSettings()} */}
 
-					<div className="row">
+					{/* <div className="row">
 						<hr style={{ marginBottom: '48px' }} />
-					</div>
+					</div> */}
 
 					{this.renderContent()}
 
-					{this.renderPaging()}
+					{/* {this.renderPaging()} */}
 
 				</div>
 
