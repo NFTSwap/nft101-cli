@@ -29,8 +29,8 @@
  * ***** END LICENSE BLOCK ***** */
 
 import {Page,React, Link} from 'webpkit';
-import Nav from '../../ctr/nav';
-import Footer from '../../ctr/footer';
+import Nav from '../../com/nav';
+import Footer from '../../com/footer';
 import './index.scss';
 
 export default class extends Page {

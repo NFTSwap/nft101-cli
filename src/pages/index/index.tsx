@@ -29,7 +29,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 import {Page,React,Link} from 'webpkit';
-import Nav from '../../ctr/nav';
+import Nav from '../../com/nav';
 import './index.scss';
 
 export default class extends Page<{a: number}, { a: number }> {

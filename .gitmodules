@@ -5,3 +5,8 @@
 [submodule "web3z"]
 	path = deps/web3z
 	url = https://github.com/louis-tru/web3z.git
+
+[submodule "NFT101"]
+	path = deps/NFT101
+	url = https://github.com/NFTSwap/NFT101.git
+

@@ -29,9 +29,9 @@
  * ***** END LICENSE BLOCK ***** */
 
 import {Page,React} from 'webpkit';
-import Nav from '../../ctr/nav';
-import Footer from '../../ctr/footer';
-import NFTItem from '../../ctr/nft_item';
+import Nav from '../../com/nav';
+import Footer from '../../com/footer';
+import NFTItem from '../../com/nft_item';
 import './index.scss';
 
 export default class extends Page {
