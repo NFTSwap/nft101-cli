@@ -3,13 +3,12 @@
  * @date 2021-01-04
  */
 
-import {TransactionPromise} from 'web3z';
-import {Address,Uint256,Bytes} from 'web3z/solidity_types'
+import {Address,Uint256} from 'web3z/solidity_types'
 import * as json from './Exchange.json';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x15290698ceD8B316933565F14318FC524f831a6b';
+export const contractAddress = '0x7322ee767aaD2dEf9e3527Dc1230fB5f09ead682';
 
 export interface AssetID {
 	token: Address;
@@ -50,24 +49,34 @@ export interface SellOrder {
 	lifespan: Uint256;
 }
 
+export interface SellingNFTData {
+	orderId: Uint256;
+	totalVotes: Uint256;
+	order: SellStore;
+}
+
+export enum OrderStatus { Ing, Expired, DealDone }
+
 export default interface Exchange {
-	ORDER_MAX_LIFESPAN(): Promise<Uint256>;
-	ORDER_MIN_LIFESPAN(): Promise<Uint256>;
 	feePlan(): Promise<Address>;
 	lastOrderId(): Promise<Uint256>;
 	ledger(): Promise<Address>;
 	owner(): Promise<Address>;
-	renounceOwnership(): TransactionPromise;
-	sellingOrders(orderId: Uint256): Promise<SellStore>
+	bids(orderId: Uint256): Promise<SellStore>;
 	teamAddress(): Promise<Address>;
-	transferOwnership(newOwner: Address): TransactionPromise;
 	votePool(): Promise<Address>;
-	initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): TransactionPromise;
-	withdraw(asset: AssetID): TransactionPromise;
-	sell(order: SellOrder): TransactionPromise;
-	buy(orderId: Uint256): TransactionPromise;
-	tryEndBid(orderId: Uint256): TransactionPromise;
-	onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): TransactionPromise;
-	getSellOrder(orderId: Uint256): Promise<{status: number; lifespan: Uint256; minPrice: Uint256}>;
+	// initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): TransactionPromise;
+	withdraw(asset: AssetID): Promise<void>; // TransactionPromise;
+	sell(order: SellOrder): Promise<Uint256>; // TransactionPromise;
+	buy(orderId: Uint256): Promise<void>; // TransactionPromise
+	tryEndBid(orderId: Uint256): Promise<boolean>;// TransactionPromise;
+	// onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): TransactionPromise;
+	// getSellOrder(orderId: Uint256): Promise<{status: number; lifespan: Uint256; minPrice: Uint256}>;
+	orderStatus(orderId: Uint256): Promise<OrderStatus>;
 	assetOf(asset: AssetID): Promise<Asset>;
+	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean): Promise<{ next: Uint256; nfts: SellingNFTData[] }>;
+	orderVoteInfo(orderId: Uint256): Promise<{ buyPrice: Uint256, auctionDays: Uint256, shareRatio: Uint256 }>;
+	// cancelVoteAllowed(orderId: Uint256, voter: Address): Promise<void>;
+	// voteAllowed();
+	// setVotePool(votePool_: Address): Promise<void>;
 }

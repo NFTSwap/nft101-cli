@@ -11,9 +11,11 @@ import * as FeePlan from './FeePlan';
 import * as Ledger from './Ledger';
 import * as VotePool from './VotePool';
 
-export default {
+const ex_ = {
 	get exchange() { return Happy.instance<Exchange.default>(Exchange, web3) },
 	get fee_plan() { return Happy.instance<FeePlan.default>(FeePlan, web3) },
 	get ledger() { return Happy.instance<Ledger.default>(Ledger, web3) },
 	get vote_pool() { return Happy.instance<VotePool.default>(VotePool, web3) },
 }
+
+export default ex_;

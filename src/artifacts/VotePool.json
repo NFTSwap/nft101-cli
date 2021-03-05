@@ -94,6 +94,37 @@
         {
           "indexed": false,
           "internalType": "uint256",
+          "name": "profit",
+          "type": "uint256"
+        }
+      ],
+      "name": "Settled",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "voteId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
           "name": "votes",
           "type": "uint256"
         },
@@ -106,6 +137,19 @@
       ],
       "name": "Voted",
       "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "MAX_FIXED_AROR",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
     },
     {
       "inputs": [],
@@ -135,7 +179,7 @@
     },
     {
       "inputs": [],
-      "name": "MIN_WEIGTH",
+      "name": "MIN_VOTE",
       "outputs": [
         {
           "internalType": "uint256",
@@ -148,7 +192,7 @@
     },
     {
       "inputs": [],
-      "name": "VOTE_LOCKTIMES",
+      "name": "MIN_WEIGTH",
       "outputs": [
         {
           "internalType": "uint256",
@@ -177,25 +221,12 @@
       "name": "exchange",
       "outputs": [
         {
-          "internalType": "contract IExchange",
+          "internalType": "contract Exchange",
           "name": "",
           "type": "address"
         }
       ],
       "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "admin",
-          "type": "address"
-        }
-      ],
-      "name": "initialize",
-      "outputs": [],
-      "stateMutability": "nonpayable",
       "type": "function"
     },
     {
@@ -242,6 +273,11 @@
         {
           "internalType": "uint256",
           "name": "totalCanceledVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "fixedRate",
           "type": "uint256"
         },
         {
@@ -294,6 +330,19 @@
       "name": "transferOwnership",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "voteLockTime",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -362,7 +411,7 @@
     {
       "inputs": [
         {
-          "internalType": "contract IExchange",
+          "internalType": "contract Exchange",
           "name": "exchange_",
           "type": "address"
         },
@@ -372,9 +421,128 @@
           "type": "address"
         }
       ],
-      "name": "init",
+      "name": "initialize",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "blocks",
+          "type": "uint256"
+        }
+      ],
+      "name": "setVoteLockTime",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "totalVotes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "votes",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "fixedRate",
+          "type": "uint256"
+        }
+      ],
+      "name": "calc",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "orderId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "votes",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVotes",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "rate",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "factor",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "yield",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "weight",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "voteId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "voter",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "buyPrice",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "auctionDays",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "shareRatio",
+              "type": "uint256"
+            }
+          ],
+          "internalType": "struct VotePool.MarginVars",
+          "name": "vars",
+          "type": "tuple"
+        },
+        {
+          "internalType": "uint256",
+          "name": "weight",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "rateFxied",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -389,7 +557,7 @@
       "outputs": [
         {
           "internalType": "uint256",
-          "name": "voteId",
+          "name": "",
           "type": "uint256"
         }
       ],
@@ -415,29 +583,15 @@
           "internalType": "uint256",
           "name": "orderId",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "commission",
+          "type": "uint256"
         }
       ],
       "name": "subCommission",
       "outputs": [],
-      "stateMutability": "payable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "address",
-          "name": "holder",
-          "type": "address"
-        }
-      ],
-      "name": "settle",
-      "outputs": [
-        {
-          "internalType": "uint256",
-          "name": "profit",
-          "type": "uint256"
-        }
-      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },

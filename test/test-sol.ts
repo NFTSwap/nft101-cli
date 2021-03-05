@@ -30,21 +30,28 @@
 
 import artifacts from '../src/artifacts';
 
+async function test() {
+	console.log('ledger.balanceOf()', await artifacts.ledger.happy().balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('ledger.transfer()', await artifacts.ledger.happy().transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')));
+}
+
 export default async function() {
+
+	await test();
 
 	var ex = artifacts.exchange.happy();
 
-	console.log('exchange.ORDER_MAX_LIFESPAN', await ex.ORDER_MAX_LIFESPAN());
-	console.log('exchange.ORDER_MIN_LIFESPAN', await ex.ORDER_MIN_LIFESPAN());
+	// console.log('exchange.ORDER_MAX_LIFESPAN', await ex.ORDER_MAX_LIFESPAN());
+	// console.log('exchange.ORDER_MIN_LIFESPAN', await ex.ORDER_MIN_LIFESPAN());
 	console.log('exchange.feePlan', await ex.feePlan());
 	console.log('exchange.lastOrderId', await ex.lastOrderId());
 	console.log('exchange.ledger', await ex.ledger());
 	console.log('exchange.owner', await ex.owner());
 	// console.log('exchange.renounceOwnership', await ex.renounceOwnership());
-	console.log('exchange.sellingOrders', await ex.sellingOrders(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	// console.log('exchange.sellingOrders', await ex.sellingOrders(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
 	// console.log('exchange.transferOwnership', await ex.transferOwnership('0x08A8b3135256725f25b44569D6Ef44674c16A237')); // post
 	console.log('exchange.votePool', await ex.votePool());
-	console.log('exchange.getSellOrder', await ex.getSellOrder(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	// console.log('exchange.getSellOrder', await ex.getSellOrder(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
 	console.log('exchange.teamAddress', await ex.teamAddress());
 	console.log('exchange.assetOf', await ex.assetOf({
 		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
@@ -96,7 +103,7 @@ export default async function() {
 	console.log('vote_pool.MAX_PENDING_VOTES', await vote_pool.MAX_PENDING_VOTES());
 	console.log('vote_pool.MAX_WEIGTH', await vote_pool.MAX_WEIGTH());
 	console.log('vote_pool.MIN_WEIGTH', await vote_pool.MIN_WEIGTH());
-	console.log('vote_pool.VOTE_LOCKTIMES', await vote_pool.VOTE_LOCKTIMES());
+	// console.log('vote_pool.VOTE_LOCKTIMES', await vote_pool.VOTE_LOCKTIMES());
 	console.log('vote_pool.Voteing', await vote_pool.Voteing());
 	console.log('vote_pool.exchange', await vote_pool.exchange());
 	console.log('vote_pool.lastVoteId', await vote_pool.lastVoteId());

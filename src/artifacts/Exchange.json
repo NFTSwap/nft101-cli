@@ -189,25 +189,63 @@
       "type": "event"
     },
     {
-      "inputs": [],
-      "name": "ORDER_MAX_LIFESPAN",
-      "outputs": [
+      "inputs": [
         {
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
         }
       ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [],
-      "name": "ORDER_MIN_LIFESPAN",
+      "name": "bids",
       "outputs": [
         {
+          "internalType": "bool",
+          "name": "end",
+          "type": "bool"
+        },
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
           "internalType": "uint256",
-          "name": "",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxSellPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minSellPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "lifespan",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "expiry",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "buyPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "bigBuyer",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "arrayIndex",
           "type": "uint256"
         }
       ],
@@ -274,60 +312,6 @@
       "type": "function"
     },
     {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "sellingOrders",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "token",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "maxSellPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "minSellPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "lifespan",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "expiry",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "buyPrice",
-          "type": "uint256"
-        },
-        {
-          "internalType": "address",
-          "name": "bigBuyer",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
       "inputs": [],
       "name": "teamAddress",
       "outputs": [
@@ -369,11 +353,6 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "admin",
-          "type": "address"
-        },
-        {
           "internalType": "contract IFeePlan",
           "name": "feePlan_",
           "type": "address"
@@ -381,11 +360,6 @@
         {
           "internalType": "contract ILedger",
           "name": "ledger_",
-          "type": "address"
-        },
-        {
-          "internalType": "contract IVotePool",
-          "name": "votePool_",
           "type": "address"
         },
         {
@@ -402,14 +376,84 @@
     {
       "inputs": [
         {
-          "internalType": "address",
-          "name": "admin",
+          "internalType": "contract IVotePool",
+          "name": "votePool_",
           "type": "address"
         }
       ],
-      "name": "initialize",
+      "name": "setVotePool",
       "outputs": [],
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "voteAllowed",
+      "outputs": [],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "voter",
+          "type": "address"
+        }
+      ],
+      "name": "cancelVoteAllowed",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "orderId",
+          "type": "uint256"
+        }
+      ],
+      "name": "orderVoteInfo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "buyPrice",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "auctionDays",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "shareRatio",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -551,22 +595,12 @@
           "type": "uint256"
         }
       ],
-      "name": "getSellOrder",
+      "name": "orderStatus",
       "outputs": [
         {
           "internalType": "enum OrderStatus",
           "name": "status",
           "type": "uint8"
-        },
-        {
-          "internalType": "uint256",
-          "name": "lifespan",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "minPrice",
-          "type": "uint256"
         }
       ],
       "stateMutability": "view",
@@ -635,6 +669,109 @@
           "internalType": "struct ExchangeStore.Asset",
           "name": "",
           "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "fromIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "pageSize",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "ignoreZeroVote",
+          "type": "bool"
+        }
+      ],
+      "name": "getSellingNFT",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "next",
+          "type": "uint256"
+        },
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "orderId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalVotes",
+              "type": "uint256"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "bool",
+                  "name": "end",
+                  "type": "bool"
+                },
+                {
+                  "internalType": "address",
+                  "name": "token",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "maxSellPrice",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "minSellPrice",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lifespan",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "expiry",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "buyPrice",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "bigBuyer",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "arrayIndex",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct ExchangeStore.SellStore",
+              "name": "order",
+              "type": "tuple"
+            }
+          ],
+          "internalType": "struct Exchange.SellingNFTData[]",
+          "name": "nfts",
+          "type": "tuple[]"
         }
       ],
       "stateMutability": "view",
