@@ -49,15 +49,16 @@ export default {
 		};
 	},
 
-	assetOf(asset: ex.AssetID) {
-		return artifact.assetOf(asset).call();
+	assetOf(token: string, tokenId: bigint) {
+		return artifact.assetOf({token, tokenId}).call();
 	},
 
 	bids(orderId: bigint) {
 		return artifact.bids(orderId).call();
 	},
 
-	async withdraw(asset: ex.AssetID): Promise<{ token: string; tokenId: bigint; from: string }> {
+	async withdraw(token: string, tokenId: bigint): Promise<{ token: string; tokenId: bigint; from: string }> {
+		var asset = {token, tokenId};
 		await artifact.withdraw(asset).call(); // test
 		var r = await artifact.withdraw(asset).post();
 		var evt = await artifacts.exchange.findEventFromReceipt('Withdraw', r);

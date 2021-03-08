@@ -20,7 +20,7 @@ export default async function() {
 	for (var hash of tokens) {
 		await newnft(hash, uri, 'nft_' + somes.random());
 		var tokenId = BigInt(hash);
-		var asset = await exchange.assetOf({token: NFTs, tokenId });
+		var asset = await exchange.assetOf(NFTs, tokenId);
 		if (asset.status == AssetStatus.List) { // sell
 			var order = {
 				token: NFTs, tokenId,
