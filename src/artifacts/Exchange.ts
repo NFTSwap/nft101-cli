@@ -4,11 +4,13 @@
  */
 
 import {Address,Uint256} from 'web3z/solidity_types'
+import {Result} from 'web3z/happy';
 import * as json from './Exchange.json';
+import {contracts} from '../../config';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x7322ee767aaD2dEf9e3527Dc1230fB5f09ead682';
+export const contractAddress = contracts.exchange;// '0x7322ee767aaD2dEf9e3527Dc1230fB5f09ead682';
 
 export interface AssetID {
 	token: Address;
@@ -58,25 +60,26 @@ export interface SellingNFTData {
 export enum OrderStatus { Ing, Expired, DealDone }
 
 export default interface Exchange {
-	feePlan(): Promise<Address>;
-	lastOrderId(): Promise<Uint256>;
-	ledger(): Promise<Address>;
-	owner(): Promise<Address>;
-	bids(orderId: Uint256): Promise<SellStore>;
-	teamAddress(): Promise<Address>;
-	votePool(): Promise<Address>;
+	feePlan(): Result<Address>;
+	lastOrderId(): Result<Uint256>;
+	ledger(): Result<Address>;
+	owner(): Result<Address>;
+	bids(orderId: Uint256): Result<SellStore>;
+	teamAddress(): Result<Address>;
+	votePool(): Result<Address>;
 	// initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): TransactionPromise;
-	withdraw(asset: AssetID): Promise<void>; // TransactionPromise;
-	sell(order: SellOrder): Promise<Uint256>; // TransactionPromise;
-	buy(orderId: Uint256): Promise<void>; // TransactionPromise
-	tryEndBid(orderId: Uint256): Promise<boolean>;// TransactionPromise;
+	withdraw(asset: AssetID): Result<void>; // TransactionPromise;
+	sell(order: SellOrder): Result<Uint256>; // TransactionPromise;
+	buy(orderId: Uint256): Result<void>; // TransactionPromise
+	tryEndBid(orderId: Uint256): Result<boolean>;// TransactionPromise;
 	// onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): TransactionPromise;
-	// getSellOrder(orderId: Uint256): Promise<{status: number; lifespan: Uint256; minPrice: Uint256}>;
-	orderStatus(orderId: Uint256): Promise<OrderStatus>;
-	assetOf(asset: AssetID): Promise<Asset>;
-	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean): Promise<{ next: Uint256; nfts: SellingNFTData[] }>;
-	orderVoteInfo(orderId: Uint256): Promise<{ buyPrice: Uint256, auctionDays: Uint256, shareRatio: Uint256 }>;
-	// cancelVoteAllowed(orderId: Uint256, voter: Address): Promise<void>;
+	// getSellOrder(orderId: Uint256): Result<{status: number; lifespan: Uint256; minPrice: Uint256}>;
+	orderStatus(orderId: Uint256): Result<OrderStatus>;
+	assetOf(asset: AssetID): Result<Asset>;
+	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean): Result<{ next: Uint256; nfts: SellingNFTData[] }>;
+	orderVoteInfo(orderId: Uint256): Result<{ buyPrice: Uint256, auctionDays: Uint256, shareRatio: Uint256 }>;
+	getSellingNFTTotal(): Result<Uint256>;
+	// cancelVoteAllowed(orderId: Uint256, voter: Address): Result<void>;
 	// voteAllowed();
-	// setVotePool(votePool_: Address): Promise<void>;
+	// setVotePool(votePool_: Address): Result<void>;
 }

@@ -56,4 +56,4 @@ export class Web3IMPL extends Web3Z {
 
 }
 
-export default new Web3IMPL
+export default new Web3IMPL;

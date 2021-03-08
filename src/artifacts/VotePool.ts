@@ -4,12 +4,14 @@
  */
 
 import {TransactionPromise} from 'web3z';
+import {Result} from 'web3z/happy';
 import {Address,Uint256} from 'web3z/solidity_types'
 import * as json from './VotePool.json';
+import {contracts} from '../../config';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
-export const contractAddress = '0x8Ec6D4Eb6629B332A58d15BD8c71b45A77972fbE';
+export const contractAddress = contracts.votePool;//'0x8Ec6D4Eb6629B332A58d15BD8c71b45A77972fbE';
 
 // 投票质押信息，用于记录每一张投票信息
 export interface Vote {
@@ -31,29 +33,28 @@ export interface OrderSummary {
 }
 
 export default interface VotePool {
-	owner(): Promise<Address>;
-	// initialize(exchange_: Address, ledger_: Address): Promise<void>; // TransactionPromise;
-	MAX_WEIGTH(): Promise<Uint256>;
-	MIN_WEIGTH(): Promise<Uint256>;
-	MAX_PENDING_VOTES(): Promise<Uint256>;
-	MAX_FIXED_AROR(): Promise<Uint256>;
-	MIN_VOTE(): Promise<Uint256>;
-	YEAR_DAYS(): Promise<Uint256>;
-	Voteing(): Promise<Uint256>;
-	lastVoteId(): Promise<Uint256>;
-	exchange(): Promise<Address>;
-	ledger(): Promise<Address>;
-	voteLockTime(): Promise<Uint256>;
-	votesByVoter(account: Address): Promise<Uint256[]>;
-	votesById(voteId: Uint256): Promise<Vote>;
-	ordersById(orderId: Uint256): Promise<OrderSummary>;
-	marginVote(orderId: Uint256): Promise<Uint256>; // TransactionPromise;
-	cancelVote(voteId: Uint256): Promise<void>; // TransactionPromise;
+	owner(): Result<Address>;
+	// initialize(exchange_: Address, ledger_: Address): Result<void>; // TransactionPromise;
+	MAX_WEIGTH(): Result<Uint256>;
+	MIN_WEIGTH(): Result<Uint256>;
+	MAX_PENDING_VOTES(): Result<Uint256>;
+	MAX_FIXED_AROR(): Result<Uint256>;
+	MIN_VOTE(): Result<Uint256>;
+	YEAR_DAYS(): Result<Uint256>;
+	Voteing(): Result<Uint256>;
+	lastVoteId(): Result<Uint256>;
+	exchange(): Result<Address>;
+	ledger(): Result<Address>;
+	voteLockTime(): Result<Uint256>;
+	votesByVoter(account: Address): Result<Uint256[]>;
+	votesById(voteId: Uint256): Result<Vote>;
+	ordersById(orderId: Uint256): Result<OrderSummary>;
+	marginVote(orderId: Uint256): Result<Uint256>; // TransactionPromise;
+	cancelVote(voteId: Uint256): Result<void>; // TransactionPromise;
 	// subCommission(orderId: Uint256): TransactionPromise;
-	settle(holder: Address): TransactionPromise;
-	orderTotalVotes(orderId: Uint256): Promise<Uint256>;
-	canRelease(holder: Address): Promise<Uint256>;
-	tryRelease(holder: Address): Promise<Uint256>; // TransactionPromise;
-	unlockAllowed(voteId: Uint256, voter: Address): Promise<boolean>;
-	allVotes(voter: Address): Promise<Uint256[]>;
+	orderTotalVotes(orderId: Uint256): Result<Uint256>;
+	canRelease(holder: Address): Result<Uint256>;
+	tryRelease(holder: Address): Result<Uint256>; // TransactionPromise;
+	unlockAllowed(voteId: Uint256, voter: Address): Result<boolean>;
+	allVotes(voter: Address): Result<Uint256[]>;
 }

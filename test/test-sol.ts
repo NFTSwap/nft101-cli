@@ -31,59 +31,61 @@
 import artifacts from '../src/artifacts';
 
 async function test() {
-	console.log('ledger.balanceOf()', await artifacts.ledger.happy().balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
-	console.log('ledger.transfer()', await artifacts.ledger.happy().transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')));
+	console.log('ledger.balanceOf()', await artifacts.ledger.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
+	console.log('ledger.transfer()', await artifacts.ledger.transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')).call());
 }
 
 export default async function() {
 
 	await test();
 
-	var ex = artifacts.exchange.happy();
+	var ex = artifacts.exchange;
 
 	// console.log('exchange.ORDER_MAX_LIFESPAN', await ex.ORDER_MAX_LIFESPAN());
 	// console.log('exchange.ORDER_MIN_LIFESPAN', await ex.ORDER_MIN_LIFESPAN());
-	console.log('exchange.feePlan', await ex.feePlan());
-	console.log('exchange.lastOrderId', await ex.lastOrderId());
-	console.log('exchange.ledger', await ex.ledger());
-	console.log('exchange.owner', await ex.owner());
+	console.log('exchange.feePlan', await ex.feePlan().call());
+	console.log('exchange.lastOrderId', await ex.lastOrderId().call());
+	console.log('exchange.ledger', await ex.ledger().call());
+	console.log('exchange.owner', await ex.owner().call());
 	// console.log('exchange.renounceOwnership', await ex.renounceOwnership());
 	// console.log('exchange.sellingOrders', await ex.sellingOrders(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
 	// console.log('exchange.transferOwnership', await ex.transferOwnership('0x08A8b3135256725f25b44569D6Ef44674c16A237')); // post
-	console.log('exchange.votePool', await ex.votePool());
+	console.log('exchange.votePool', await ex.votePool().call());
 	// console.log('exchange.getSellOrder', await ex.getSellOrder(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
-	console.log('exchange.teamAddress', await ex.teamAddress());
+	console.log('exchange.teamAddress', await ex.teamAddress().call());
 	console.log('exchange.assetOf', await ex.assetOf({
 		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
 		tokenId: BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'),
-	}));
+	}).call());
+	console.log('exchange.getSellingNFT', await ex.getSellingNFT(BigInt(0), BigInt(10), true).call());
+	console.log('exchange.getSellingNFTTotal', await ex.getSellingNFTTotal().call());
 
-	var fee_plan = artifacts.fee_plan.happy();
+	var fee_plan = artifacts.fee_plan;
 
-	console.log('fee_plan.feeToTeam', await fee_plan.feeToTeam());
-	console.log('fee_plan.feeToTeamAtFirst', await fee_plan.feeToTeamAtFirst());
-	console.log('fee_plan.feeToVoter', await fee_plan.feeToVoter());
-	console.log('fee_plan.feeToVoterAtFirst', await fee_plan.feeToVoterAtFirst());
-	console.log('fee_plan.owner', await fee_plan.owner());
+	console.log('fee_plan.feeToTeam', await fee_plan.feeToTeam().call());
+	console.log('fee_plan.feeToTeamAtFirst', await fee_plan.feeToTeamAtFirst().call());
+	console.log('fee_plan.feeToVoter', await fee_plan.feeToVoter().call());
+	console.log('fee_plan.feeToVoterAtFirst', await fee_plan.feeToVoterAtFirst().call());
+	console.log('fee_plan.owner', await fee_plan.owner().call());
 	// console.log('fee_plan.renounceOwnership', await fee_plan.renounceOwnership());
 	// console.log('fee_plan.transferOwnership', await fee_plan.transferOwnership());
 	// console.log('fee_plan.initialize', await fee_plan.initialize('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
-	console.log('fee_plan.formula', await fee_plan.formula(BigInt('0x1ff00'), true, BigInt('0x100')));
+	console.log('fee_plan.formula', await fee_plan.formula(BigInt('0x1ff00'), true, BigInt('0x100')).call());
 
-	var ledger = artifacts.ledger.happy();
+	var ledger = artifacts.ledger;
 
-	console.log('ledger.owner', await ledger.owner());
+	console.log('ledger.owner', await ledger.owner().call());
 	// initialize(admin: Address): TransactionPromise;
 	// renounceOwnership(): TransactionPromise;
 	// transferOwnership(): TransactionPromise;
-	console.log('ledger.decimals', await ledger.decimals());
-	console.log('ledger.name', await ledger.name());
-	console.log('ledger.symbol', await ledger.symbol());
+	console.log('ledger.decimals', await ledger.decimals().call());
+	console.log('ledger.name', await ledger.name().call());
+	console.log('ledger.symbol', await ledger.symbol().call());
 	// addNewSubLedger(sub: Address): TransactionPromise;
-	console.log('ledger.totalSupply', await ledger.totalSupply());
-	console.log('ledger.balanceOf', await ledger.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('ledger.totalSupply', await ledger.totalSupply().call());
+	console.log('ledger.balanceOf', await ledger.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 	// transfer(recipient: Address, amount: Uint256): TransactionPromise;
-	console.log('ledger.allowance', await ledger.allowance('0x08A8b3135256725f25b44569D6Ef44674c16A237', '0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('ledger.allowance', await ledger.allowance('0x08A8b3135256725f25b44569D6Ef44674c16A237', '0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 	// approve(spender: Address, amount: Uint256): TransactionPromise;
 	// transferFrom(sender: Address, recipient: Address, amount: Uint256): TransactionPromise;
 	// increaseAllowance(spender: Address, addedValue: Uint256): TransactionPromise;
@@ -92,34 +94,34 @@ export default async function() {
 	// mint(): TransactionPromise;
 	// lock(to: Address, lockId: Uint256): TransactionPromise;
 	// unlock(holder: Address, lockId: Uint256, withdrawNow: boolean): TransactionPromise;
-	console.log('ledger.lockedItems', await ledger.lockedItems('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('ledger.lockedItems', await ledger.lockedItems('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 
-	var vote_pool = artifacts.vote_pool.happy();
+	var vote_pool = artifacts.vote_pool;
 
-	console.log('vote_pool.owner', await vote_pool.owner());
+	console.log('vote_pool.owner', await vote_pool.owner().call());
 	// initialize(admin: Address): TransactionPromise;
 	// renounceOwnership(): TransactionPromise;
 	// transferOwnership(): TransactionPromise;
-	console.log('vote_pool.MAX_PENDING_VOTES', await vote_pool.MAX_PENDING_VOTES());
-	console.log('vote_pool.MAX_WEIGTH', await vote_pool.MAX_WEIGTH());
-	console.log('vote_pool.MIN_WEIGTH', await vote_pool.MIN_WEIGTH());
+	console.log('vote_pool.MAX_PENDING_VOTES', await vote_pool.MAX_PENDING_VOTES().call());
+	console.log('vote_pool.MAX_WEIGTH', await vote_pool.MAX_WEIGTH().call());
+	console.log('vote_pool.MIN_WEIGTH', await vote_pool.MIN_WEIGTH().call());
 	// console.log('vote_pool.VOTE_LOCKTIMES', await vote_pool.VOTE_LOCKTIMES());
-	console.log('vote_pool.Voteing', await vote_pool.Voteing());
-	console.log('vote_pool.exchange', await vote_pool.exchange());
-	console.log('vote_pool.lastVoteId', await vote_pool.lastVoteId());
-	console.log('vote_pool.ledger', await vote_pool.ledger());
-	console.log('vote_pool.ordersById', await vote_pool.ordersById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
-	console.log('vote_pool.votesById', await vote_pool.votesById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
+	console.log('vote_pool.Voteing', await vote_pool.Voteing().call());
+	console.log('vote_pool.exchange', await vote_pool.exchange().call());
+	console.log('vote_pool.lastVoteId', await vote_pool.lastVoteId().call());
+	console.log('vote_pool.ledger', await vote_pool.ledger().call());
+	console.log('vote_pool.ordersById', await vote_pool.ordersById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')).call());
+	console.log('vote_pool.votesById', await vote_pool.votesById(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')).call());
 	// votesByVoter(account: Address, _: Uint256): Promise<Uint256[]>;
 	// init(exchange_: Address, ledger_: Address): TransactionPromise;
 	// marginVote(orderId: Uint256): TransactionPromise;
 	// cancelVote(voteId: Uint256): TransactionPromise;
 	// subCommission(orderId: Uint256): TransactionPromise;
 	// settle(holder: Address): TransactionPromise;
-	console.log('vote_pool.orderTotalVotes', await vote_pool.orderTotalVotes(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')));
-	console.log('vote_pool.canRelease', await vote_pool.canRelease('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('vote_pool.orderTotalVotes', await vote_pool.orderTotalVotes(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529')).call());
+	console.log('vote_pool.canRelease', await vote_pool.canRelease('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 	// tryRelease(holder: Address): TransactionPromise;
-	console.log('vote_pool.unlockAllowed', await vote_pool.unlockAllowed(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'), '0x08A8b3135256725f25b44569D6Ef44674c16A237'));
-	console.log('vote_pool.allVotes', await vote_pool.allVotes('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
+	console.log('vote_pool.unlockAllowed', await vote_pool.unlockAllowed(BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'), '0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
+	console.log('vote_pool.allVotes', await vote_pool.allVotes('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 
 }
