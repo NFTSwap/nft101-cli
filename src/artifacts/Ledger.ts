@@ -14,22 +14,18 @@ export const contractAddress = contracts.ledger;//'0x5947073453b978fc36235747031
 
 export default interface Ledger {
 	owner(): Result<Address>;
-	// initialize(admin: Address): TransactionPromise;
 	name(): Result<string>;
 	symbol(): Result<string>;
 	decimals(): Result<Uint8>;
-	// addNewSubLedger(sub: Address): Result<void>; // TransactionPromise;
 	totalSupply(): Result<Uint256>;
 	balanceOf(account: Address): Result<Uint256>;
-	transfer(recipient: Address, amount: Uint256): Result<boolean>; // TransactionPromise;
+	transfer(recipient: Address, amount: Uint256): Result<boolean>;
 	allowance(owner: Address, spender: Address): Result<Uint256>;
-	approve(spender: Address, amount: Uint256): Result<boolean>; // TransactionPromise;
-	transferFrom(sender: Address, recipient: Address, amount: Uint256): Result<boolean>; // TransactionPromise;
-	increaseAllowance(spender: Address, addedValue: Uint256): Result<boolean>; // TransactionPromise;
-	decreaseAllowance(spender: Address, subtractedValue: Uint256): Result<boolean>; // TransactionPromise;
-	withdraw(receiver: Address, amount: Uint256): Result<void>; // TransactionPromise;
-	deposit(): Promise<void>; // TransactionPromise;
-	// lock(to: Address, lockId: Uint256): Promise<void>; // TransactionPromise;
-	// unlock(holder: Address, lockId: Uint256, withdrawNow: boolean): Result<Uint256>; // TransactionPromise;
+	approve(spender: Address, amount: Uint256): Result<boolean>;
+	transferFrom(sender: Address, recipient: Address, amount: Uint256): Result<boolean>;
+	increaseAllowance(spender: Address, addedValue: Uint256): Result<boolean>;
+	decreaseAllowance(spender: Address, subtractedValue: Uint256): Result<boolean>;
+	withdraw(receiver: Address, amount: Uint256): Result<void>;
+	deposit(): Promise<void>;
 	lockedItems(holder: Address): Result<{locker: Address; lockId: Uint256; amount: Uint256}[]>;
 }

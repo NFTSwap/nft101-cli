@@ -10,12 +10,15 @@ import * as Exchange from './Exchange';
 import * as FeePlan from './FeePlan';
 import * as Ledger from './Ledger';
 import * as VotePool from './VotePool';
+import * as NFTs from './NFTs';
 
 const ex_ = {
-	get exchange() { return Happy.instance<Exchange.default>(Exchange, web3).api },
-	get fee_plan() { return Happy.instance<FeePlan.default>(FeePlan, web3).api },
-	get ledger() { return Happy.instance<Ledger.default>(Ledger, web3).api },
-	get vote_pool() { return Happy.instance<VotePool.default>(VotePool, web3).api },
+	get exchange() { return Happy.instance<Exchange.default>(Exchange, web3) },
+	get fee_plan() { return Happy.instance<FeePlan.default>(FeePlan, web3) },
+	get ledger() { return Happy.instance<Ledger.default>(Ledger, web3) },
+	get vote_pool() { return Happy.instance<VotePool.default>(VotePool, web3) },
+	get nfts() { return Happy.instance<NFTs.default>(NFTs, web3) },
+	nft(address: string) { return Happy.instance<NFTs.default>(NFTs, web3, address) },
 }
 
 export default ex_;

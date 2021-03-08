@@ -3,7 +3,6 @@
  * @date 2021-01-05
  */
 
-import {TransactionPromise} from 'web3z';
 import {Result} from 'web3z/happy';
 import {Address,Uint256} from 'web3z/solidity_types'
 import * as json from './VotePool.json';
@@ -34,7 +33,6 @@ export interface OrderSummary {
 
 export default interface VotePool {
 	owner(): Result<Address>;
-	// initialize(exchange_: Address, ledger_: Address): Result<void>; // TransactionPromise;
 	MAX_WEIGTH(): Result<Uint256>;
 	MIN_WEIGTH(): Result<Uint256>;
 	MAX_PENDING_VOTES(): Result<Uint256>;
@@ -49,12 +47,11 @@ export default interface VotePool {
 	votesByVoter(account: Address): Result<Uint256[]>;
 	votesById(voteId: Uint256): Result<Vote>;
 	ordersById(orderId: Uint256): Result<OrderSummary>;
-	marginVote(orderId: Uint256): Result<Uint256>; // TransactionPromise;
-	cancelVote(voteId: Uint256): Result<void>; // TransactionPromise;
-	// subCommission(orderId: Uint256): TransactionPromise;
+	marginVote(orderId: Uint256): Result<Uint256>;
+	cancelVote(voteId: Uint256): Result<void>;
 	orderTotalVotes(orderId: Uint256): Result<Uint256>;
 	canRelease(holder: Address): Result<Uint256>;
-	tryRelease(holder: Address): Result<Uint256>; // TransactionPromise;
+	tryRelease(holder: Address): Result<Uint256>;
 	unlockAllowed(voteId: Uint256, voter: Address): Result<boolean>;
 	allVotes(voter: Address): Result<Uint256[]>;
 }

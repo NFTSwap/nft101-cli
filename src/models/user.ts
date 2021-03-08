@@ -30,16 +30,36 @@
 
 import web3 from '../web3';
 
-export async function login() {
+var _address: string = '';
+
+export async function load() {
 
 	var mask = web3.metaMask;
 
 	var [from] = await mask.request({ method: 'eth_requestAccounts' });
 
+	console.log('eth_requestAccounts', from);
+
+	_address = from;
+}
+
+export async function login() {
+
+	var mask = web3.metaMask;
+
+	var addr = await address();
+
 	var r = await mask.request({
 		method: 'personal_sign',
-		params: [from, 'SuperRare uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
+		params: [addr, 'NFTSwap uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
 	});
 
 	console.log('personal_sign', r);
+}
+
+export async function address() {
+	if (!_address) {
+		await load();
+	}
+	return _address;
 }

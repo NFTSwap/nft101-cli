@@ -39,8 +39,8 @@ export default async function() {
 	console.log('currentProvider', web3.currentProvider);
 	console.log('web3.getBlockNumber', await web3.eth.getBlockNumber());
 
-	var license_types = ccl.license_types.happy();
-	var logs = ccl.logs.happy();
+	var license_types = ccl.license_types.api;
+	var logs = ccl.logs.api;
 
 	console.log('license_types', await license_types.get('11100000000019713D057'));
 

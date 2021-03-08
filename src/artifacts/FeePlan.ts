@@ -14,7 +14,6 @@ export const contractAddress = contracts.feePlan;//'0x99B42B2D0503ECDaB00393F955
 
 export default interface FeePlan {
 	owner(): Result<Address>;
-	// initialize(admin: Address): TransactionPromise;
 	feeUnit(): Result<Uint256>;
 	feeToVoterAtFirst(): Result<Uint256>;
 	feeToTeamAtFirst(): Result<Uint256>;

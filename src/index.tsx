@@ -31,6 +31,7 @@
 import { Root,ReactDom,React } from 'webpkit';
 import router from './router';
 import somes from 'somes';
+// import buffer from 'somes/buffer';
 // import {initialize} from './sdk';
 import errno_handles from 'webpkit/lib/errno_handles';
 // import {Console} from 'somes/log';
@@ -44,12 +45,16 @@ import './assets/all2.scss';
 
 // document.documentElement.style.fontSize = '46px';
 
+function errno(err: Error) {
+	errno_handles(err);
+}
+
 somes.onUncaughtException.on((e)=>{
-	errno_handles(e.data);
+	errno(e.data);
 });
 
 somes.onUnhandledRejection.on((e)=>{
-	errno_handles(e.data.reason);
+	errno(e.data.reason);
 });
 
 // initialize().catch(console.error);

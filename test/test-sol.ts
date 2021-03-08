@@ -28,18 +28,93 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
+import web3 from '../src/web3';
+import somes from 'somes';
+// import {rng} from 'somes/rng';
+import {contractAddress as Exchange, AssetStatus} from '../src/artifacts/Exchange';
+import {contractAddress as NFTs} from '../src/artifacts/NFTs';
 import artifacts from '../src/artifacts';
+import * as user from '../src/models/user';
 
 async function test() {
-	console.log('ledger.balanceOf()', await artifacts.ledger.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
-	console.log('ledger.transfer()', await artifacts.ledger.transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')).call());
+	console.log('ledger.balanceOf()', await artifacts.ledger.api.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
+	console.log('ledger.transfer()', await artifacts.ledger.api.transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')).call());
+}
+
+export async function newnft(hash_: string, uri_: string, name: string) {
+	// var hash = BigInt('0x' + rng(32).toString('hex'));
+	// var hash = BigInt('0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407');
+	var hash = BigInt(hash_);
+	var address = await user.address();
+	var nfts = artifacts.nfts.api;
+
+	var exists = await nfts.exists(hash).call();
+	if (!exists) {
+		await nfts.mint(hash).call();
+		await nfts.mint(hash).post();
+	}
+	var uri = await nfts.tokenURI(hash).call();
+	if (uri != uri_) {
+		await nfts.setTokenURI(hash, uri_).call();
+		await nfts.setTokenURI(hash, uri_).post();
+		// 'https://ipfs.pixura.io/ipfs/QmSvZR32rfCDaKAPweFNa6ik8zoFkaGcMB5KYRNLgVMCwN/ultra-solem.mp4'
+	}
+
+	var owner = await nfts.ownerOf(hash).call();
+	if (owner != Exchange) {
+		var category = 0, flags = 0;
+		var data = web3.eth.abi.encodeParameters(
+			['uint16', 'uint16', 'string'], [category, flags, name]
+		);
+		await nfts.safeTransferFrom(address, Exchange, hash, data).call();
+		await nfts.safeTransferFrom(address, Exchange, hash, data).post();
+	}
+
+	console.log('gennft.tokenURI', await nfts.tokenURI(hash).call());
+}
+
+async function nft() {
+
+	var tokens = [
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246408',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246409',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae24640a',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae24640b',
+		'0x4b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
+		'0x4b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246408',
+		'0x4b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246409',
+		'0x4b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae24640a',
+		'0x4b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae24640b',
+	];
+	var uri = 'https://ipfs.pixura.io/ipfs/QmSvZR32rfCDaKAPweFNa6ik8zoFkaGcMB5KYRNLgVMCwN/ultra-solem.mp4';
+
+	for (var hash of tokens) {
+		await newnft(hash, uri, 'nft_' + somes.random());
+
+		var tokenId = BigInt(hash);
+		var asset = await artifacts.exchange.api.assetOf({token: NFTs, tokenId }).call();
+		if (asset.status == AssetStatus.List) { // sell
+			var order = {
+				token: NFTs, tokenId,
+				maxSellPrice: BigInt(1e19),
+				minSellPrice: BigInt(1e18), lifespan: BigInt(100),
+			};
+			await artifacts.exchange.api.sell(order).call();
+			await artifacts.exchange.api.sell(order).post();
+		}
+	}
+
+	console.log('------------- nft ok -------------');
+
 }
 
 export default async function() {
 
 	await test();
+	await nft()
 
-	var ex = artifacts.exchange;
+	var ex = artifacts.exchange.api;
 
 	// console.log('exchange.ORDER_MAX_LIFESPAN', await ex.ORDER_MAX_LIFESPAN());
 	// console.log('exchange.ORDER_MIN_LIFESPAN', await ex.ORDER_MIN_LIFESPAN());
@@ -57,10 +132,10 @@ export default async function() {
 		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
 		tokenId: BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'),
 	}).call());
-	console.log('exchange.getSellingNFT', await ex.getSellingNFT(BigInt(0), BigInt(10), true).call());
+	console.log('exchange.getSellingNFT', await ex.getSellingNFT(BigInt(0), BigInt(10), false).call());
 	console.log('exchange.getSellingNFTTotal', await ex.getSellingNFTTotal().call());
 
-	var fee_plan = artifacts.fee_plan;
+	var fee_plan = artifacts.fee_plan.api;
 
 	console.log('fee_plan.feeToTeam', await fee_plan.feeToTeam().call());
 	console.log('fee_plan.feeToTeamAtFirst', await fee_plan.feeToTeamAtFirst().call());
@@ -72,7 +147,7 @@ export default async function() {
 	// console.log('fee_plan.initialize', await fee_plan.initialize('0x08A8b3135256725f25b44569D6Ef44674c16A237'));
 	console.log('fee_plan.formula', await fee_plan.formula(BigInt('0x1ff00'), true, BigInt('0x100')).call());
 
-	var ledger = artifacts.ledger;
+	var ledger = artifacts.ledger.api;
 
 	console.log('ledger.owner', await ledger.owner().call());
 	// initialize(admin: Address): TransactionPromise;
@@ -96,7 +171,7 @@ export default async function() {
 	// unlock(holder: Address, lockId: Uint256, withdrawNow: boolean): TransactionPromise;
 	console.log('ledger.lockedItems', await ledger.lockedItems('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
 
-	var vote_pool = artifacts.vote_pool;
+	var vote_pool = artifacts.vote_pool.api;
 
 	console.log('vote_pool.owner', await vote_pool.owner().call());
 	// initialize(admin: Address): TransactionPromise;

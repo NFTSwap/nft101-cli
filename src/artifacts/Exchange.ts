@@ -67,19 +67,13 @@ export default interface Exchange {
 	bids(orderId: Uint256): Result<SellStore>;
 	teamAddress(): Result<Address>;
 	votePool(): Result<Address>;
-	// initialize(name: Address, feePlan_: Address, ledger_: Address, votePool_: Address, team: Address): TransactionPromise;
-	withdraw(asset: AssetID): Result<void>; // TransactionPromise;
-	sell(order: SellOrder): Result<Uint256>; // TransactionPromise;
-	buy(orderId: Uint256): Result<void>; // TransactionPromise
-	tryEndBid(orderId: Uint256): Result<boolean>;// TransactionPromise;
-	// onERC721Received(_: Address, from: Address, tokenId: Uint256, data: Bytes): TransactionPromise;
-	// getSellOrder(orderId: Uint256): Result<{status: number; lifespan: Uint256; minPrice: Uint256}>;
+	withdraw(asset: AssetID): Result<void>;
+	sell(order: SellOrder): Result<Uint256>;
+	buy(orderId: Uint256): Result<void>;
+	tryEndBid(orderId: Uint256): Result<boolean>;
 	orderStatus(orderId: Uint256): Result<OrderStatus>;
 	assetOf(asset: AssetID): Result<Asset>;
 	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean): Result<{ next: Uint256; nfts: SellingNFTData[] }>;
 	orderVoteInfo(orderId: Uint256): Result<{ buyPrice: Uint256, auctionDays: Uint256, shareRatio: Uint256 }>;
 	getSellingNFTTotal(): Result<Uint256>;
-	// cancelVoteAllowed(orderId: Uint256, voter: Address): Result<void>;
-	// voteAllowed();
-	// setVotePool(votePool_: Address): Result<void>;
 }
