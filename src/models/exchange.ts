@@ -1,5 +1,4 @@
 
-import {EventData} from 'web3z';
 import somes from 'somes';
 import artifacts from '../artifacts';
 import * as ex from '../artifacts/Exchange';
@@ -12,9 +11,10 @@ export interface NFTAsset {
 	selling?: ex.SellingNFTData;
 }
 
-class Exchange {
+export default {
 
 	async getSellingNFT101() {
+		// TODO ...
 		var total = Number(await artifact.getSellingNFTTotal().call());
 		var nfts: NFTAsset[] = [];
 		if (total != 0) {
@@ -28,12 +28,13 @@ class Exchange {
 			}
 		}
 		return nfts;
-	}
+	},
 
 	async myNFTs() {
+		// TODO ...
 		var nfts: NFTAsset[] = [];
 		return nfts;
-	}
+	},
 
 	async sell(order: ex.SellOrder): Promise<{ token: string; tokenId: bigint; seller: string; orderId: bigint }> {
 		await artifact.sell(order).call(); // test
@@ -46,15 +47,15 @@ class Exchange {
 			seller: values.seller,
 			tokenId: BigInt(values.tokenId),
 		};
-	}
+	},
 
 	assetOf(asset: ex.AssetID) {
 		return artifact.assetOf(asset).call();
-	}
+	},
 
 	bids(orderId: bigint) {
 		return artifact.bids(orderId).call();
-	}
+	},
 
 	async withdraw(asset: ex.AssetID): Promise<{ token: string; tokenId: bigint; from: string }> {
 		await artifact.withdraw(asset).call(); // test
@@ -67,7 +68,7 @@ class Exchange {
 			from: values.from,
 			tokenId: BigInt(values.tokenId),
 		};
-	}
+	},
 
 	async buy(orderId: bigint): Promise<{ buyer: string; orderId: bigint; price: bigint }> {
 		// event Buy(uint256 indexed orderId, address buyer, uint256 price);
@@ -80,16 +81,14 @@ class Exchange {
 			orderId: BigInt(values.orderId),
 			price: BigInt(values.price),
 		};
-	}
+	},
 
 	orderStatus(orderId: bigint): Promise<ex.OrderStatus> {
 		return artifact.orderStatus(orderId).call();
-	}
+	},
 
 	orderVoteInfo(orderId: bigint) {
 		return artifact.orderVoteInfo(orderId).call();
-	}
+	},
 
 }
-
-export default new Exchange;
