@@ -26,6 +26,6 @@ export default interface Ledger {
 	increaseAllowance(spender: Address, addedValue: Uint256): Result<boolean>;
 	decreaseAllowance(spender: Address, subtractedValue: Uint256): Result<boolean>;
 	withdraw(receiver: Address, amount: Uint256): Result<void>;
-	deposit(): Promise<void>;
+	deposit(): Result<void>;
 	lockedItems(holder: Address): Result<{locker: Address; lockId: Uint256; amount: Uint256}[]>;
 }

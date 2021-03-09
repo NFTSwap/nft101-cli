@@ -18,7 +18,7 @@ export interface Vote {
 	orderId: Uint256; // 所参与的竞拍活动
 	votes: Uint256; // 投票质押数量
 	weight: Uint256; // 投票质押系数
-	blockNumber: Uint256; // 投票区块搞定
+	blockNumber: Uint256; // 投票区块高度
 }
 
 // 竞拍活动的投票质押信息总览

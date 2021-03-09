@@ -6,16 +6,19 @@ export const artifact = artifacts.nfts.api;
 
 export default {
 
+	// get token uri
 	tokenURI(token: string, tokenId: bigint): Promise<string> {
 		return artifacts.nft(token).api.tokenURI(tokenId).call();
 	},
 
+	// 设置token uri
 	async setTokenURI(token: string, tokenId: bigint, tokenURI: string): Promise<void> {
 		var nft = artifacts.nft(token);
 		await nft.api.setTokenURI(tokenId, tokenURI).call();
 		await nft.api.setTokenURI(tokenId, tokenURI).post();
 	},
 
+	// 创建一个新的资产
 	async mint(token: string, tokenId: bigint) {
 		var nft = artifacts.nft(token);
 		await nft.api.mint(tokenId).call();
@@ -29,6 +32,7 @@ export default {
 		};
 	},
 
+	// 健全转移资产
 	async safeTransferFrom(token: string, from: string, to: string, tokenId: bigint, data?: Uint8Array) {
 		var nft = artifacts.nft(token);
 		var data_ = data ? buffer.from(data).toString('hex'): '0x0';
@@ -43,6 +47,7 @@ export default {
 		};
 	},
 
+	// 查看资产是否存在
 	exists(token: string, tokenId: bigint) {
 		return artifacts.nft(token).api.exists(tokenId).call();
 	},

@@ -1,9 +1,63 @@
 
-// import web3 from '../web3';
 import artifacts from '../artifacts';
 
-export const artifact = artifacts.ledger;
+export const artifact = artifacts.ledger.api;
 
 export default {
-	// ...artifact,
+
+	// 当前管理eth资产总量
+	totalSupply() {
+		return artifact.totalSupply().call();
+	},
+
+	// 通过账户查看eth资产数量
+	balanceOf(account: string) {
+		return artifact.balanceOf(account).call();
+	},
+
+	// 把的eth资产转移到 to
+	async transfer(to: string, amount: bigint) {
+		await artifact.transfer(to, amount).call();
+		var r = await artifact.transfer(to, amount).post();
+		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
+		var values = evt.returnValues as any;
+		return {
+			from: values.address as string,
+			to: values.to as string,
+			value: BigInt(values.value),
+		};
+	},
+
+	// 取出eth资产托管, totalSupply 总量会变少
+	async withdraw(receiver: string, amount: bigint) {
+		await artifact.withdraw(receiver, amount).call();
+		var r = await artifact.withdraw(receiver, amount).post();
+		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
+		var values = evt.returnValues as any;
+		return {
+			from: values.address as string,
+			to: values.to as string,
+			value: BigInt(values.value),
+		};
+	},
+
+	// 存入eth资产托管
+	async deposit(amount: bigint) {
+		await artifact.deposit().call({value: String(amount)});
+		var r = await artifact.deposit().post({value: String(amount)});
+		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
+		var values = evt.returnValues as any;
+		return {
+			from: values.address as string,
+			to: values.to as string,
+			value: BigInt(values.value),
+		};
+	},
+
+	// 查看锁定的eth资产列表（投票列表）现在的协约竞拍结束后不能自动取消投票
+	// 需要查询此api然后调用`cancelVote()`取消投票，后投票的eth才会返回自己的账户
+	lockedItems(holder: string) {
+		return artifact.lockedItems(holder).call();
+	},
+
 };
