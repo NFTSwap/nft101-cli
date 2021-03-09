@@ -98,7 +98,7 @@ async function nft() {
 			var order = {
 				token: NFTs, tokenId,
 				maxSellPrice: BigInt(1e19),
-				minSellPrice: BigInt(1e18), lifespan: BigInt(100),
+				minSellPrice: BigInt(1e18), lifespan: BigInt(1),
 			};
 			await artifacts.exchange.api.sell(order).call();
 			await artifacts.exchange.api.sell(order).post();

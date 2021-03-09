@@ -57,6 +57,10 @@ const routes = [
 		path: '/sell',
 		page: () => import('./pages/sell'),
 	},
+	{
+		path: '/metamask',
+		page: () => import('./pages/metamask'),
+	}
 ];
 
 export default routes;

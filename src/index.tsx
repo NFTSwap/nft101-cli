@@ -33,6 +33,7 @@ import router from './router';
 import somes from 'somes';
 // import buffer from 'somes/buffer';
 // import {initialize} from './sdk';
+import * as user from './models/user';
 import errno_handles from 'webpkit/lib/errno_handles';
 // import {Console} from 'somes/log';
 
@@ -43,25 +44,16 @@ import './assets/all.css';
 import './assets/css.css';
 import './assets/all2.scss';
 
+somes.onUncaughtException.on((e)=>errno_handles(e.data));
+somes.onUnhandledRejection.on((e)=>errno_handles(e.data.reason));
+
 // document.documentElement.style.fontSize = '46px';
-
-function errno(err: Error) {
-	errno_handles(err);
-}
-
-somes.onUncaughtException.on((e)=>{
-	errno(e.data);
-});
-
-somes.onUnhandledRejection.on((e)=>{
-	errno(e.data.reason);
-});
-
 // initialize().catch(console.error);
+// Console.defaultInstance.log('init ok');
+
+user.load();
 
 ReactDom.render(
 	<Root routes={router} />,
 	document.querySelector('#app')
 );
-
-// Console.defaultInstance.log('init ok');

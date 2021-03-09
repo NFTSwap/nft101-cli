@@ -31,9 +31,17 @@
 import { Page, React } from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
+import NftItem from '../../com/nft_item';
+import ex, {NFTAsset} from '../../models/exchange';
 import './index.scss';
 
 export default class extends Page {
+
+	state: { assets?: NFTAsset[] } = {};
+
+	async triggerLoad() {
+		this.setState({ assets: await ex.getSellingNFT101() });
+	}
 
 	renderContent() {
 		return (
@@ -634,6 +642,7 @@ export default class extends Page {
 	}
 
 	render() {
+		var {assets} = this.state;
 		return (
 			<div className="marketplace-page app-page nft101">
 
@@ -652,7 +661,14 @@ export default class extends Page {
 						<hr style={{ marginBottom: '48px' }} />
 					</div> */}
 
-					{this.renderContent()}
+					{/* {this.renderContent()} */}
+
+					{
+						assets ? assets.length == 0 ? <div>Empty data</div> : assets.map((e,j)=>
+							<NftItem assets={e} key={j} />
+						):
+						<div>Loading...</div>
+					}
 
 					{/* {this.renderPaging()} */}
 

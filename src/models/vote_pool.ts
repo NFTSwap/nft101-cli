@@ -59,7 +59,7 @@ export default {
 
 	// 返回订单的投票总量
 	orderTotalVotes(orderId: bigint) {
-		return artifact.cancelVote(orderId).call();
+		return artifact.orderTotalVotes(orderId).call();
 	},
 
 	// 要释放的金额,我的收益

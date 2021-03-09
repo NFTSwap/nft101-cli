@@ -56,12 +56,12 @@ export default class extends ViewController {
 											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">NFT101</button>
 									</Link>
 									<Link
-										className="desktop-nav-link active" to="/sell"><button type="button"
-											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Sell</button>
-									</Link>
-									<Link
 										className="desktop-nav-link" to="/mynft"><button type="button"
 											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">MyNFT</button>
+									</Link>
+									<Link
+										className="desktop-nav-link active" to="/sell"><button type="button"
+											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">Sell</button>
 									</Link>
 									<Link
 										className="desktop-nav-link" to="/income"><button type="button"

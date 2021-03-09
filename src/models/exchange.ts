@@ -1,5 +1,8 @@
 
 import somes from 'somes';
+import { Address, Uint256 } from 'web3z/solidity_types';
+import nfts from './nfts';
+import vp from './vote_pool';
 import artifacts from '../artifacts';
 import * as ex from '../artifacts/Exchange';
 
@@ -7,11 +10,40 @@ export const artifact = artifacts.exchange.api;
 
 export interface NFTAsset {
 	asset: ex.Asset;
+	token: Address;
+	tokenId: Uint256;
 	tokenURI: string;
 	selling?: ex.SellingNFTData;
 }
 
+export interface BuyRecord {
+	orderId: Uint256;
+	price: bigint;
+	buyer: Address;
+}
+
 export default {
+
+	async assetSellingOf(token: string, tokenId: bigint): Promise<NFTAsset> {
+		var selling: ex.SellingNFTData | undefined;
+		console.log('triggerLoad', token, tokenId);
+		var asset = await this.assetOf(token, tokenId);
+		var tokenURI = await nfts.tokenURI(token, tokenId);
+		if (asset.status == ex.AssetStatus.Selling) {
+			var orderId = asset.lastOrderId;
+			var totalVotes = await vp.orderTotalVotes(orderId);
+			selling = {
+				orderId,
+				totalVotes,
+				order: await this.bids(orderId),
+			};
+		}
+		return {
+			asset,
+			token, tokenId,
+			tokenURI, selling,
+		};
+	},
 
 	// 返回当前拍卖排名最高的101个
 	async getSellingNFT101() {
@@ -19,12 +51,15 @@ export default {
 		var total = Number(await artifact.getSellingNFTTotal().call());
 		var nfts: NFTAsset[] = [];
 		if (total != 0) {
-			var r = await artifact.getSellingNFT(BigInt(0), BigInt(Math.min(100, total)), false).call();
+			var r = await artifact.getSellingNFT(BigInt(0), BigInt(Math.min(100, total)), true).call();
 			for (var selling of r.nfts) {
 				if (selling.orderId) {
-					var asset = await artifact.assetOf({ token: selling.order.token, tokenId: selling.order.tokenId }).call();
-					var tokenURI = await artifacts.nft(selling.order.token as string).api.tokenURI(selling.order.tokenId).call();
-					nfts.push({ asset, tokenURI, selling })
+					var token = selling.order.token;
+					var tokenId = selling.order.tokenId;
+					var asset = await artifact.assetOf({ token, tokenId }).call();
+					var tokenURI = await artifacts.nft(token as string).api.tokenURI(tokenId).call();
+
+					nfts.push({ asset, tokenURI, selling, token, tokenId });
 				}
 			}
 		}
@@ -73,10 +108,11 @@ export default {
 	},
 
 	// 拍卖出价
-	async buy(orderId: bigint): Promise<{ buyer: string; orderId: bigint; price: bigint }> {
+	async buy(orderId: bigint, price: bigint): Promise<{ buyer: string; orderId: bigint; price: bigint }> {
 		// event Buy(uint256 indexed orderId, address buyer, uint256 price);
-		await artifact.buy(orderId).call(); // test
-		var r = await artifact.buy(orderId).post();
+		var value = String(price);
+		await artifact.buy(orderId).call({value}); // test
+		var r = await artifact.buy(orderId).post({value});
 		var evt = await artifacts.exchange.findEventFromReceipt('Buy', r);
 		var values = evt.returnValues as any;
 		return {
@@ -84,6 +120,12 @@ export default {
 			orderId: BigInt(values.orderId),
 			price: BigInt(values.price),
 		};
+	},
+
+	// 历史购买记录
+	async historyBuys(orderId: bigint): Promise<BuyRecord[]> {
+		// TODO ...
+		return [];
 	},
 
 	// 尝试结束一个拍卖订单

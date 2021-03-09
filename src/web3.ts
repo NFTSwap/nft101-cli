@@ -40,6 +40,11 @@ export class Web3IMPL extends Web3Z {
 		if (!this._metaMask) {
 			this._metaMask = (globalThis as any).ethereum;
 			// TODO .. check _metaMask
+			if (!this._metaMask) {
+				if (location.href.indexOf('/metamask') == -1) {
+					location.href.indexOf('/metamask');
+				}
+			}
 			var currentChainId = this._metaMask.chainId;
 			console.log('currentChainId', currentChainId);
 		}
@@ -54,6 +59,10 @@ export class Web3IMPL extends Web3Z {
 		return this.metaMask;
 	}
 
+}
+
+export function web3Support() {
+	return !!(globalThis as any).ethereum;
 }
 
 export default new Web3IMPL;

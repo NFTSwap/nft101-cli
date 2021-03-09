@@ -31,15 +31,28 @@
 import {Page,React} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
-import NFTItem from '../../com/nft_item';
+import NftItem from '../../com/nft_item';
+import ex, {NFTAsset} from '../../models/exchange';
 import './index.scss';
 
 export default class extends Page {
+
+	state: { assets?: NFTAsset[] } = {};
+	
+	async triggerLoad() {
+		this.setState({ assets: await ex.myNFTs() });
+	}
 	
 	renderContent() {
+		var assets = this.state.assets;
 		return (
 			<div className="row new-grid-row-margin-l-r">
-				<NFTItem />
+				{
+					assets ? assets.length == 0 ? <div>Empty data</div> : assets.map((e,j)=>
+						<NftItem assets={e} key={j} />
+					):
+					<div>Loading...</div>
+				}
 			</div>
 		);
 	}

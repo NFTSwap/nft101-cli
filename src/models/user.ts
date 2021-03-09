@@ -28,26 +28,47 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from '../web3';
+import web3, {web3Support} from '../web3';
+import buffer from 'somes/buffer';
+
+const crypto_tx = require('crypto-tx');
+
+export interface User {
+	address: string;
+}
 
 var _address: string = '';
 
+// load address
 export async function load() {
+	if (!_address) {
+		if (web3Support()) {
+			var mask = web3.metaMask;
 
-	var mask = web3.metaMask;
+			var [from] = await mask.request({ method: 'eth_requestAccounts' });
 
-	var [from] = await mask.request({ method: 'eth_requestAccounts' });
+			console.log('eth_requestAccounts', from);
 
-	console.log('eth_requestAccounts', from);
+			if (from) {
+				from = '0x' + crypto_tx.toChecksumAddress(buffer.from(from.slice(2), 'hex'));
+			}
 
-	_address = from;
+			_address = from || '';
+		}
+	}
+
+	return _address;
 }
 
-export async function login() {
+export async function user() {
 
 	var mask = web3.metaMask;
 
-	var addr = await address();
+	var addr = await load();
+
+	if (!addr) {
+		// TODO ...
+	}
 
 	var r = await mask.request({
 		method: 'personal_sign',
@@ -58,8 +79,12 @@ export async function login() {
 }
 
 export async function address() {
-	if (!_address) {
-		await load();
+	if (! await load()) {
+		await user();
 	}
+	return _address;
+}
+
+export function addressNoJump() {
 	return _address;
 }
