@@ -51,9 +51,10 @@ somes.onUnhandledRejection.on((e)=>errno_handles(e.data.reason));
 // initialize().catch(console.error);
 // Console.defaultInstance.log('init ok');
 
-user.load();
+user.load().then(()=>{
 
-ReactDom.render(
-	<Root routes={router} />,
-	document.querySelector('#app')
-);
+	ReactDom.render(
+		<Root routes={router} />,
+		document.querySelector('#app')
+	);
+});

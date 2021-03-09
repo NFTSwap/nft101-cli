@@ -36,7 +36,6 @@ import {SellingNFTData} from '../../artifacts/Exchange';
 import ex, {NFTAsset,BuyRecord} from '../../models/exchange';
 import vp from '../../models/vote_pool';
 import * as user from '../../models/user';
-// import artifacts from '../../artifacts';
 import Loading from 'webpkit/lib/loading';
 import Dialog from 'webpkit/lib/dialog';
 import './index.scss';
@@ -51,6 +50,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 	async triggerLoad() {
 		var data = await ex.assetSellingOf(this.params.token, BigInt(this.params.tokenId))
 		var historyBuys = data.selling ? await ex.historyBuys(data.selling.orderId): null;
+		debugger
 		this.setState({
 			data, historyBuys,
 		});

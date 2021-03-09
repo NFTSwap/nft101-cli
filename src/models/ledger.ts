@@ -1,5 +1,6 @@
 
 import artifacts from '../artifacts';
+import * as user from './user';
 
 export const artifact = artifacts.ledger.api;
 
@@ -11,8 +12,8 @@ export default {
 	},
 
 	// 通过账户查看eth资产数量
-	balanceOf(account: string) {
-		return artifact.balanceOf(account).call();
+	balanceOf(account?: string) {
+		return artifact.balanceOf(account || user.addressNoJump()).call();
 	},
 
 	// 把的eth资产转移到 to
