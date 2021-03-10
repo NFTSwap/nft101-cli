@@ -28,7 +28,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React,Link} from 'webpkit';
+import {Page,React} from 'webpkit';
 import Nav from '../../com/nav';
 import './index.scss';
 
@@ -38,7 +38,7 @@ export default class extends Page<{a: number}, { a: number }> {
 		return (
 			<div className="body index">
 				<Nav />
-				<h1 style={{ paddingTop: '200px'}}>欢迎使用 NFTSwap</h1> <br />
+				<h1 style={{ paddingTop: '200px'}}>Welcome NFTSwap</h1> <br />
 				{/* <Link to="/nft101">Sell</Link> */}
 			</div>
 		);

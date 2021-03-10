@@ -54,13 +54,13 @@ const routes = [
 		page: () => import('./pages/nft101'),
 	},
 	{
-		path: '/sell',
-		page: () => import('./pages/sell'),
-	},
-	{
 		path: '/metamask',
 		page: () => import('./pages/metamask'),
-	}
+	},
+	{
+		path: '/publish',
+		page: () => import('./pages/publish'),
+	},
 ];
 
 export default routes;

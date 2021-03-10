@@ -29,6 +29,7 @@ export default interface NFTs {
 	transferFrom(from: Address, to: Address, tokenId: Uint256): Result<void>;
 	safeTransferFrom(from: Address, to: Address, tokenId: Uint256, data: Bytes): Result<void>;
 	mint(tokenId: Uint256): Result<void>;
+	safeMintURI(to: Address, tokenId: Uint256, tokenURI: string, data: Bytes): Result<void>;
 	safeMint(to: Address, tokenId: Uint256, data: Bytes): Result<void>;
 	burn(tokenId: Uint256): Result<void>;
 	setTokenURI(tokenId: Uint256, tokenURI: string): Result<void>;

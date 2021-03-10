@@ -1,5 +1,6 @@
 
 import buffer from 'somes/buffer'
+import { Address } from 'web3z/solidity_types';
 import artifacts from '../artifacts';
 // import {Bytes} from 'web3z/solidity_types';
 
@@ -24,6 +25,20 @@ export default {
 		var nft = artifacts.nft(token);
 		await nft.api.mint(tokenId).call();
 		var r = await nft.api.mint(tokenId).post();
+		var evt = await nft.findEventFromReceipt('Transfer', r);
+		var values = evt[0].returnValues as any;
+		return {
+			from: values.address as string,
+			to: values.to as string,
+			tokenId: BigInt(values.tokenId),
+		};
+	},
+
+	async safeMintURI(token: string, to: Address, tokenId: bigint, tokenURI: string, data?: Uint8Array) {
+		var nft = artifacts.nft(token);
+		var data_ = data ? '0x' + buffer.from(data).toString('hex'): '0x0';
+		await nft.api.safeMintURI(to, tokenId, tokenURI, data_).call();
+		var r = await nft.api.safeMintURI(to, tokenId, tokenURI, data_).post();
 		var evt = await nft.findEventFromReceipt('Transfer', r);
 		var values = evt[0].returnValues as any;
 		return {
