@@ -38,7 +38,7 @@ export default class extends Page<{a: number}, { a: number }> {
 		return (
 			<div className="body index">
 				<Nav />
-				<h1 style={{ paddingTop: '200px'}}>Welcome NFTSwap</h1> <br />
+				<h1 style={{ paddingTop: '200px'}}>Welcome to NFTSwap</h1> <br />
 				{/* <Link to="/nft101">Sell</Link> */}
 			</div>
 		);
