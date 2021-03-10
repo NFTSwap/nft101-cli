@@ -1,4 +1,5 @@
 
+import {check} from '../src/artifacts';
 import test_sol from './test-sol';
 import test_mod from './test-mod';
 // require('./test-tx').default();
@@ -7,6 +8,7 @@ import test_mod from './test-mod';
 async function test() {
 	// await test_sol();
 	// await test_mod();
+	await check();
 }
 
 test();

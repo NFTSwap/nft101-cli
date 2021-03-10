@@ -17,6 +17,7 @@ export default interface Ledger {
 	name(): Result<string>;
 	symbol(): Result<string>;
 	decimals(): Result<Uint8>;
+	hasSubLedger(addr: Address): Result<Uint8>;
 	totalSupply(): Result<Uint256>;
 	balanceOf(account: Address): Result<Uint256>;
 	transfer(recipient: Address, amount: Uint256): Result<boolean>;
