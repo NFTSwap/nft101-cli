@@ -31,9 +31,36 @@
 import {Page,React, Link} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
+import artifacts from '../../artifacts';
+import nfts from '../../models/nfts';
 import './index.scss';
+import Loading from 'webpkit/lib/loading';
+import Dialog from 'webpkit/lib/dialog';
+import web3 from '../../web3';
+import * as user from '../../models/user';
+import buffer from 'somes/buffer';
 
 export default class extends Page {
+
+	async _NFTSwap() {
+		
+		var token = (this.refs.erc721 as HTMLInputElement).value;
+		var token_id = (this.refs.erc721_id as HTMLInputElement).value;
+		var erc721_name = (this.refs.erc721_name as HTMLInputElement).value;
+		var data_str = web3.eth.abi.encodeParameters(
+			['uint16', 'uint16', 'string'], [0, 0, erc721_name]
+		);
+		var data = buffer.from(data_str.slice(2), 'hex');
+		var address = user.addressNoJump();
+
+		try {
+			await Loading.show();
+			await nfts.safeTransferFrom(token, address, artifacts.exchange.address, BigInt(token_id), data);
+			Dialog.alert('NFT Swap OK', ()=>(location.href = '/mynft'));
+		} finally {
+			Loading.close();
+		}
+	}
 	
 	render() {
 		return (
@@ -50,7 +77,8 @@ export default class extends Page {
 					<div style={{textAlign: 'center'}}>
 						ERC721协约：<input ref="erc721" style={{width: '300px'}} /><br /><br />
 						ERC721资产ID：<input ref="erc721_id" style={{width: '300px'}} /><br /><br />
-						<button>转移到NFTSwap</button>
+						ERC721资产名称：<input ref="erc721_name" style={{width: '300px'}} /><br /><br />
+						<button onClick={()=>this._NFTSwap()}>转移到NFTSwap</button>
 					</div>
 
 					<div style={{textAlign: 'center'}}>
@@ -58,7 +86,7 @@ export default class extends Page {
 						<br/><br/>
 						<h2>或</h2><br/>
 
-						将ERC721资产转移到 0x08A8b3135256725f25b44569D6Ef44674c16A237 协约<br /><br/>
+						将ERC721资产转移到 {artifacts.exchange.address} 协约<br /><br/>
 						<Link to="/mynft">转移完成去出售</Link>
 					</div>
 

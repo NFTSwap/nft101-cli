@@ -28,49 +28,99 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React} from 'webpkit';
+import {Page,React,Link} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
 import ledger from '../../models/ledger';
 import vp from '../../models/vote_pool';
+import ex from '../../models/exchange';
+import {Vote} from '../../artifacts/VotePool';
 import artifacts from '../../artifacts';
+import {SellStore,OrderStatus} from '../../artifacts/Exchange';
 import * as user from '../../models/user';
+import * as util from '../../util';
 import './index.scss';
+import Loading from 'webpkit/lib/loading';
+import Dialog from 'webpkit/lib/dialog';
 
 export default class extends Page {
 
-	state = { balanceOf: BigInt(0) };
+	state = { 
+		balanceOf: BigInt(0),
+		canRelease: BigInt(0),
+		lockedItems: [] as {
+			locker: string;
+			lockId: bigint;
+			amount: bigint;
+		}[],
+		votes: [] as Vote[],
+		orders: [] as SellStore[],
+		status: [] as OrderStatus[],
+	};
 
 	async triggerLoad() {
 		var address = user.addressNoJump();
 		var balanceOf = await ledger.balanceOf(address);
-		var items = await ledger.lockedItems(address);
-		var ledger_add = await artifacts.vote_pool.api.ledger().call();
-		console.log(ledger_add)
-		debugger
-		this.setState({ balanceOf, items });
+		var canRelease = await vp.canRelease(address);
+		var lockedItems = await ledger.lockedItems(address);
+
+		console.log('canRelease', canRelease);
+
+		console.log('ledger.balanceOf(artifacts.vote_pool.address)', util.price(await ledger.balanceOf(artifacts.vote_pool.address)));
+
+		// console.log('vp.ordersById', await vp.ordersById(BigInt(21)));
+
+		var votes = [];
+		var orders = [];
+		var status = [];
+
+		for (var i of lockedItems) {
+			var vote = await vp.votesById(i.lockId);
+			var order = await ex.bids(vote.orderId);
+			var state = await ex.orderStatus(vote.orderId);
+			votes.push(vote);
+			orders.push(order);
+			status.push(state);
+		}
+
+		// console.log(balanceOf, canRelease, lockedItems);
+		this.setState({ balanceOf, canRelease, lockedItems, votes, orders, status });
 	}
 
-	async _Settle() {
-		debugger
+	async _Withdraw() {
 		var address = user.addressNoJump();
-		var eth = await vp.canRelease(address);
-		console.log(eth);
-		await vp.cancelVote(BigInt(12));
-		var votes = await vp.allVotes(address);
-		debugger
-
-		for (var vote of votes) {
-			var vote_o = await vp.votesById(vote);
-			console.log(vote_o)
+		try {
+			var { amount, ok } = await new Promise((r)=>{
+				Dialog.prompt({ text: 'Input amount' }, (amount, ok)=>r({amount, ok}));
+			});
+			if (!ok) return;
+			await Loading.show();
+			await ledger.withdraw(address, BigInt(amount) * BigInt(1e18));
+			Dialog.alert('Withdraw OK', ()=>location.reload());
+		} finally {
+			Loading.close();
 		}
-		// await vp.tryRelease(address);
+	}
+
+	async _CancelVote(voteId: bigint) {
+		try {
+			await Loading.show();
+			await vp.cancelVote(voteId);
+			Dialog.alert('Cancel Vote OK', ()=>location.reload());
+		} finally {
+			Loading.close();
+		}
+	}
+
+	async _tryRelease() {
+		var address = user.addressNoJump();
+		await vp.tryRelease(address);
 	}
 
 	render() {
-		var {balanceOf} = this.state;
+		var {balanceOf,lockedItems, orders, votes, status, canRelease } = this.state;
 		return (
-			<div className="marketplace-page app-page sell">
+			<div className="marketplace-page app-page income">
 				<Nav />
 
 				<div className="container">
@@ -80,16 +130,38 @@ export default class extends Page {
 						</div>
 					</div>
 
-					<div>
-						<button onClick={()=>this._Settle()}>Settle</button>
+					<div className="balance-of">
+						<h3>BalanceOf({util.price(balanceOf - canRelease)}) + Vote income({util.price(canRelease)}) = {util.price(balanceOf)} ETH </h3>
+						<button onClick={()=>this._Withdraw()}>Withdraw</button>
 					</div>
 
-					<div>
-						balanceOf: {String(balanceOf)}
+					<div className="balance-of">
+						{/* <button onClick={()=>this._tryRelease()}>tryRelease</button> */}
 					</div>
 
-					<div>
-						
+					<div className="votes">Vote locks:</div>
+					<div className="list">
+						{
+							lockedItems.map((e,j)=>{
+								var order = orders[j];
+								var vote = votes[j];
+								var stat = status[j];
+								return (
+									<div className="list_item" key={j}>
+										<div className="txt">
+											<div>lockId: {String(e.lockId)}</div>
+											<div>voteId: {String(e.lockId)}</div>
+											<div>amount: {util.price(e.amount)}ETH</div>
+											<div>orderId: {String(vote.orderId)}</div>
+											<div>token: {String(order.token)}</div>
+											<div>tokenId: {'0x' + order.tokenId.toString(16)}</div>
+										</div>
+										<Link to={`/details?token=${String(order.token)}&tokenId=${String(order.tokenId)}`}>Go</Link>
+										{stat == OrderStatus.DealDone ? null: <button onClick={()=>this._CancelVote(e.lockId)}>Cancel</button>}
+									</div>
+								);
+							})
+						}
 					</div>
 
 				</div>

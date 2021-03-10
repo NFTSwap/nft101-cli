@@ -19,14 +19,14 @@ export function ethRateDollar() {
 
 export function price(eth?: bigint) {
 	if (eth) {
-		return Number(eth / BigInt(1e18)).toFixed(1);
+		return (Number(eth) / 1e18).toFixed(2);
 	}
 	return '0.0';
 }
 
 export function priceDollar(eth?: bigint) {
 	if (eth) {
-		return (Number(eth / BigInt(1e18)) * ethRateDollar()).toFixed(1);
+		return ((Number(eth) / 1e18) * ethRateDollar()).toFixed(1);
 	}
 	return '0.0';
 }

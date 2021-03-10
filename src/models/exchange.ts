@@ -5,16 +5,11 @@ import nfts from './nfts';
 import vp from './vote_pool';
 import artifacts from '../artifacts';
 import * as ex from '../artifacts/Exchange';
+import * as user from './user';
 
 export const artifact = artifacts.exchange.api;
 
-export interface NFTAsset {
-	asset: ex.Asset;
-	token: Address;
-	tokenId: Uint256;
-	tokenURI: string;
-	selling?: ex.SellingNFTData;
-}
+export type NFTAsset = ex.NFTAsset;
 
 export interface BuyRecord {
 	orderId: Uint256;
@@ -24,7 +19,7 @@ export interface BuyRecord {
 
 export default {
 
-	async assetSellingOf(token: string, tokenId: bigint): Promise<NFTAsset> {
+	async assetSellingOf(token: string, tokenId: bigint): Promise<ex.NFTAsset> {
 		var selling: ex.SellingNFTData | undefined;
 		console.log('triggerLoad', token, tokenId);
 		var asset = await this.assetOf(token, tokenId);
@@ -46,30 +41,19 @@ export default {
 	},
 
 	// 返回当前拍卖排名最高的101个
-	async getSellingNFT101() {
+	async getNFT101() {
 		// TODO ...
-		var total = Number(await artifact.getSellingNFTTotal().call());
-		var nfts: NFTAsset[] = [];
-		if (total != 0) {
-			var r = await artifact.getSellingNFT(BigInt(0), BigInt(Math.min(100, total)), true).call();
-			for (var selling of r.nfts) {
-				if (selling.orderId) {
-					var token = selling.order.token;
-					var tokenId = selling.order.tokenId;
-					var asset = await artifact.assetOf({ token, tokenId }).call();
-					var tokenURI = await artifacts.nft(token as string).api.tokenURI(tokenId).call();
-
-					nfts.push({ asset, tokenURI, selling, token, tokenId });
-				}
-			}
-		}
-		return nfts;
+		var r = await artifact.getSellingNFT(BigInt(0), BigInt(100), true, true).call();
+		// console.log(r)
+		return r.nfts;
 	},
 
 	// 返回我的资产列表
 	async myNFTs() {
 		// TODO ...
-		var nfts: NFTAsset[] = [];
+		var address = user.addressNoJump();
+		var nfts = await artifact.assetsFrom(address, true).call();
+		// console.log(nfts);
 		return nfts;
 	},
 
@@ -85,7 +69,7 @@ export default {
 		var r = await artifact.withdraw(asset).post();
 		var evt = await artifacts.exchange.findEventFromReceipt('Withdraw', r);
 		somes.assert(evt, 'not event Withdraw');
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
 			token: values.token,
 			from: values.from,
@@ -98,7 +82,7 @@ export default {
 		await artifact.sell(order).call(); // test
 		var r = await artifact.sell(order).post();
 		var evt = await artifacts.exchange.findEventFromReceipt('Sell', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
 			token: values.token,
 			orderId: BigInt(values.orderId),
@@ -114,7 +98,8 @@ export default {
 		await artifact.buy(orderId).call({value}); // test
 		var r = await artifact.buy(orderId).post({value});
 		var evt = await artifacts.exchange.findEventFromReceipt('Buy', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
+		console.log(r.events);
 		return {
 			buyer: values.buyer,
 			orderId: BigInt(values.orderId),
@@ -134,7 +119,7 @@ export default {
 			return null;
 		var r = await artifact.tryEndBid(orderId).post();
 		var evt = await artifacts.exchange.findEventFromReceipt('BidDone', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		// event BidDone(uint256 orderId, address winner, uint256 price);
 		return {
 			orderId: BigInt(values.orderId),
@@ -162,8 +147,12 @@ export default {
 	},
 
 	// 分页返回拍卖资产列表
-	getSellingNFT(fromIndex: number, pageSize: number, ignoreZeroVote?: boolean) {
-		return artifact.getSellingNFT(BigInt(fromIndex), BigInt(pageSize), !!ignoreZeroVote).call();
+	getSellingNFT(fromIndex: number, pageSize: number, ignoreZeroVote?: boolean, isTokenURI?: boolean) {
+		return artifact.getSellingNFT(BigInt(fromIndex), BigInt(pageSize), !!ignoreZeroVote, !!isTokenURI).call();
+	},
+
+	assetsFrom(owner: Address, isTokenURI?: boolean): Promise<ex.NFTAsset[]> {
+		return artifact.assetsFrom(owner, !!isTokenURI).call();
 	},
 
 	// 当前拍卖中的资产数量

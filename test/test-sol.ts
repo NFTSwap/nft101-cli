@@ -41,7 +41,7 @@ async function test() {
 	console.log('ledger.transfer()', await artifacts.ledger.api.transfer('0x08A8b3135256725f25b44569D6Ef44674c16A237', BigInt('0')).call());
 }
 
-export async function newnft(hash_: string, uri_: string, name: string) {
+export async function newnft(hash_: string, uri_: string, name: string, toExchange: boolean) {
 	// var hash = BigInt('0x' + rng(32).toString('hex'));
 	// var hash = BigInt('0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407');
 	var hash = BigInt(hash_);
@@ -60,14 +60,16 @@ export async function newnft(hash_: string, uri_: string, name: string) {
 		// 'https://ipfs.pixura.io/ipfs/QmSvZR32rfCDaKAPweFNa6ik8zoFkaGcMB5KYRNLgVMCwN/ultra-solem.mp4'
 	}
 
-	var owner = await nfts.ownerOf(hash).call();
-	if (owner != Exchange) {
-		var category = 0, flags = 0;
-		var data = web3.eth.abi.encodeParameters(
-			['uint16', 'uint16', 'string'], [category, flags, name]
-		);
-		await nfts.safeTransferFrom(address, Exchange, hash, data).call();
-		await nfts.safeTransferFrom(address, Exchange, hash, data).post();
+	if (toExchange) {
+		var owner = await nfts.ownerOf(hash).call();
+		if (owner != Exchange) {
+			var category = 0, flags = 0;
+			var data = web3.eth.abi.encodeParameters(
+				['uint16', 'uint16', 'string'], [category, flags, name]
+			);
+			await nfts.safeTransferFrom(address, Exchange, hash, data).call();
+			await nfts.safeTransferFrom(address, Exchange, hash, data).post();
+		}
 	}
 
 	console.log('gennft.tokenURI', await nfts.tokenURI(hash).call());
@@ -90,7 +92,7 @@ async function nft() {
 	var uri = 'https://ipfs.pixura.io/ipfs/QmSvZR32rfCDaKAPweFNa6ik8zoFkaGcMB5KYRNLgVMCwN/ultra-solem.mp4';
 
 	for (var hash of tokens) {
-		await newnft(hash, uri, 'nft_' + somes.random());
+		await newnft(hash, uri, 'nft_' + somes.random(), true);
 
 		var tokenId = BigInt(hash);
 		var asset = await artifacts.exchange.api.assetOf({token: NFTs, tokenId }).call();
@@ -132,7 +134,7 @@ export default async function() {
 		token: '0x08A8b3135256725f25b44569D6Ef44674c16A237', 
 		tokenId: BigInt('0x0c3b14b48efe80524918e366821b49a30905c6e7187f6a5a717843f28653a529'),
 	}).call());
-	console.log('exchange.getSellingNFT', await ex.getSellingNFT(BigInt(0), BigInt(10), false).call());
+	console.log('exchange.getSellingNFT', await ex.getSellingNFT(BigInt(0), BigInt(10), false, true).call());
 	console.log('exchange.getSellingNFTTotal', await ex.getSellingNFTTotal().call());
 
 	var fee_plan = artifacts.fee_plan.api;

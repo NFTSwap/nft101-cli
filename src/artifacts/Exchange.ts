@@ -30,6 +30,7 @@ export interface Asset {
 	name: string;
 	lastOrderId: Uint256;
 	lastDealOrderId: Uint256;
+	arrayIndex: Uint256;
 }
 
 export interface SellStore {
@@ -57,6 +58,14 @@ export interface SellingNFTData {
 	order: SellStore;
 }
 
+export interface NFTAsset {
+	asset: Asset;
+	token: Address;
+	tokenId: Uint256;
+	tokenURI: string;
+	selling?: SellingNFTData;
+}
+
 export enum OrderStatus { Ing, Expired, DealDone }
 
 export default interface Exchange {
@@ -65,6 +74,7 @@ export default interface Exchange {
 	ledger(): Result<Address>;
 	owner(): Result<Address>;
 	bids(orderId: Uint256): Result<SellStore>;
+	assetsFrom(owner: Address, isTokenURI: boolean): Result<NFTAsset[]>;
 	teamAddress(): Result<Address>;
 	votePool(): Result<Address>;
 	withdraw(asset: AssetID): Result<void>;
@@ -73,7 +83,7 @@ export default interface Exchange {
 	tryEndBid(orderId: Uint256): Result<boolean>;
 	orderStatus(orderId: Uint256): Result<OrderStatus>;
 	assetOf(asset: AssetID): Result<Asset>;
-	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean): Result<{ next: Uint256; nfts: SellingNFTData[] }>;
+	getSellingNFT(fromIndex: Uint256, pageSize: Uint256, ignoreZeroVote: boolean, isTokenURI: boolean): Result<{ next: Uint256; nfts: NFTAsset[] }>;
 	orderVoteInfo(orderId: Uint256): Result<{ buyPrice: Uint256, auctionDays: Uint256, shareRatio: Uint256 }>;
 	getSellingNFTTotal(): Result<Uint256>;
 }

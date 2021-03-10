@@ -32,6 +32,7 @@ import {Page,React} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
 import * as util from '../../util';
+import artifacts from '../../artifacts';
 import {SellingNFTData} from '../../artifacts/Exchange';
 import ex, {NFTAsset,BuyRecord} from '../../models/exchange';
 import vp from '../../models/vote_pool';
@@ -47,13 +48,28 @@ export default class extends Page<{token: string; tokenId: string}> {
 		historyBuys: null as (BuyRecord[] | null),
 	};
 
+	async _test(selling: SellingNFTData) {
+		var fee_plan = artifacts.fee_plan.api;
+
+		console.log('fee_plan.feeToVoterAtFirst', await fee_plan.feeToVoterAtFirst().call());
+		console.log('fee_plan.feeToVoter       ', await fee_plan.feeToVoter().call());
+		console.log('fee_plan.feeToTeamAtFirst ', await fee_plan.feeToTeamAtFirst().call());
+		console.log('fee_plan.feeToTeam        ', await fee_plan.feeToTeam().call());
+
+		var votes = await vp.orderTotalVotes(selling.orderId);
+		console.log('vp.orderTotalVotes', votes);
+		var formula =
+			await fee_plan.formula(selling.order.maxSellPrice, true, votes).call();
+		console.log(formula);
+	}
+
 	async triggerLoad() {
 		var data = await ex.assetSellingOf(this.params.token, BigInt(this.params.tokenId))
 		var historyBuys = data.selling ? await ex.historyBuys(data.selling.orderId): null;
-		debugger
-		this.setState({
-			data, historyBuys,
-		});
+		this.setState({ data, historyBuys });
+
+		if (data.selling)
+			await this._test(data.selling);
 	}
 
 	private async _vote(data: NFTAsset) {
@@ -113,7 +129,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 			if (!ok) return;
 			await Loading.show();
 			await ex.buy(selling.orderId, BigInt(value) * BigInt(1e18));
-			Dialog.alert('Input price OK', ()=>location.reload());
+			Dialog.alert('BUY OK', ()=>location.reload());
 		} finally {
 			Loading.close();
 		}
@@ -205,7 +221,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 			<div className="collectible-detail-wrapper">
 				<div className="md-grid collectible-detail-grid">
 					<div className="md-cell md-cell--3 collectible-detail-desktop-col-1">
-						<h1 className="collectible-detail__collectible-name">{asset.name}</h1>
+						<h1 className="collectible-detail__collectible-name">{asset.name || data.tokenId}</h1>
 						<div className="collectible-detail__collectible-scarcity-container">
 							{/* <p className="collectible-detail__collectible-scarcity">Edition <span>1</span> of <span>1</span></p> */}
 						</div>

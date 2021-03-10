@@ -37,7 +37,7 @@ export default {
 		await artifact.marginVote(orderId).call({ value: String(amount) });
 		var r = await artifact.marginVote(orderId).post({ value: String(amount) });
 		var evt = await artifacts.vote_pool.findEventFromReceipt('Voted', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
 			orderId: BigInt(values.orderId),
 			voter: String(values.voter), voteId: BigInt(values.voteId),
@@ -50,7 +50,7 @@ export default {
 		await artifact.cancelVote(voteId).call();
 		var r = await artifact.cancelVote(voteId).post();
 		var evt = await artifacts.vote_pool.findEventFromReceipt('Canceled', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
 			orderId: BigInt(values.orderId),
 			voter: String(values.voter), voteId: BigInt(values.voteId),

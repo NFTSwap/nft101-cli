@@ -40,7 +40,7 @@ export default class extends Page {
 	state: { assets?: NFTAsset[] } = {};
 
 	async triggerLoad() {
-		this.setState({ assets: await ex.getSellingNFT101() });
+		this.setState({ assets: await ex.getNFT101() });
 	}
 
 	renderContent() {

@@ -7,18 +7,20 @@ import {contractAddress as Exchange, AssetStatus} from '../src/artifacts/Exchang
 
 export default async function() {
 
-	console.log(await exchange.getSellingNFT101());
+	console.log(await exchange.getNFT101());
 	console.log(await exchange.myNFTs());
 
 	var tokens = [
 		'0x5b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
 		'0x6b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
 		'0x7b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246407',
+		'0x3b8a95286812302a5e997d920524c3084c5dde131a2e9e18ee96722eae246409',
 	];
 	var uri = 'https://ipfs.pixura.io/ipfs/QmSvZR32rfCDaKAPweFNa6ik8zoFkaGcMB5KYRNLgVMCwN/ultra-solem.mp4';
 
 	for (var hash of tokens) {
-		await newnft(hash, uri, 'nft_' + somes.random());
+		await newnft(hash, uri, 'nft_' + somes.random(), false);
 		var tokenId = BigInt(hash);
 		var asset = await exchange.assetOf(NFTs, tokenId);
 		if (asset.status == AssetStatus.List) { // sell

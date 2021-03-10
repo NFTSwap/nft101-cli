@@ -7,7 +7,7 @@ import test_mod from './test-mod';
 
 async function test() {
 	// await test_sol();
-	// await test_mod();
+	await test_mod();
 	await check();
 }
 

@@ -21,7 +21,7 @@ export default {
 		await artifact.transfer(to, amount).call();
 		var r = await artifact.transfer(to, amount).post();
 		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
 			from: values.address as string,
 			to: values.to as string,
@@ -34,9 +34,9 @@ export default {
 		await artifact.withdraw(receiver, amount).call();
 		var r = await artifact.withdraw(receiver, amount).post();
 		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
-		var values = evt.returnValues as any;
+		var values = evt[1].returnValues as any;
 		return {
-			from: values.address as string,
+			from: values.from as string,
 			to: values.to as string,
 			value: BigInt(values.value),
 		};
@@ -47,9 +47,9 @@ export default {
 		await artifact.deposit().call({value: String(amount)});
 		var r = await artifact.deposit().post({value: String(amount)});
 		var evt = await artifacts.ledger.findEventFromReceipt('Transfer', r);
-		var values = evt.returnValues as any;
+		var values = evt[0].returnValues as any;
 		return {
-			from: values.address as string,
+			from: values.from as string,
 			to: values.to as string,
 			value: BigInt(values.value),
 		};
