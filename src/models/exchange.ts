@@ -43,7 +43,7 @@ export default {
 	// 返回当前拍卖排名最高的101个
 	async getNFT101() {
 		// TODO ...
-		var r = await artifact.getSellingNFT(BigInt(0), BigInt(100), true, true).call();
+		var r = await artifact.getSellingNFT(BigInt(0), BigInt(100), false, true).call();
 		// console.log(r)
 		return r.nfts.sort((a, b)=>{
 			var _a = a.selling ? a.selling.totalVotes: BigInt(-1);
