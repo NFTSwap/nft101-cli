@@ -45,7 +45,11 @@ export default {
 		// TODO ...
 		var r = await artifact.getSellingNFT(BigInt(0), BigInt(100), true, true).call();
 		// console.log(r)
-		return r.nfts;
+		return r.nfts.sort((a, b)=>{
+			var _a = a.selling ? a.selling.totalVotes: BigInt(-1);
+			var _b = b.selling ? b.selling.totalVotes: BigInt(-1);
+			return Number(_b - _a);
+		});
 	},
 
 	// 返回我的资产列表
