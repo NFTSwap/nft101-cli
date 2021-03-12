@@ -10,3 +10,6 @@
 	path = deps/NFT101
 	url = https://github.com/NFTSwap/NFT101.git
 
+[submodule "NFT101-RUST"]
+	path = deps/NFT101-RUST
+	url = https://github.com/NFTSwap/NFT101-RUST.git
