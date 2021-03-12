@@ -28,14 +28,14 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from '../src/models/eth/web3';
+import web3 from '../src/models/web3';
 import somes from 'somes';
 // import {rng} from 'somes/rng';
 import {AssetStatus, exchange as ex, user} from '../src/models';
 // import {contractAddress as Exchange} from '../src/models/eth/artifacts/Exchange';
 // import {contractAddress as NFTs} from '../src/artifacts/NFTs';
-import artifacts from '../src/models/eth/artifacts';
-import nfts from '../src/models/eth/nfts';
+import artifacts from '../src/models/web3/artifacts';
+import nfts from '../src/models/web3/nfts';
 // import * as user from '../src/models/user';
 
 async function test() {

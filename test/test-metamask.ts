@@ -28,7 +28,7 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from '../src/models/eth/web3';
+import web3 from '../src/models/web3';
 
 export default async function() {
 

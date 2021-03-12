@@ -4,7 +4,7 @@
  */
 
 import somes from 'somes';
-import web3 from '../web3';
+import web3 from '..';
 import Happy from 'web3z/happy';
 
 import * as Exchange from './Exchange';

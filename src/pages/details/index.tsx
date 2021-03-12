@@ -32,7 +32,7 @@ import {Page,React} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
 import * as util from '../../util';
-import artifacts from '../../models/eth/artifacts';
+import artifacts from '../../models/web3/artifacts';
 import {exchange as ex, vote_pool as vp, user, SellingNFTData,NFTAsset,BuyRecord} from '../../models';
 import Loading from 'webpkit/lib/loading';
 import Dialog from 'webpkit/lib/dialog';

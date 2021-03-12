@@ -38,12 +38,12 @@ if (cfg.platform == 'substrate') {
 	encodeParameters = _substrate.encodeParameters;
 } else {
 
-	const _ex = require('./eth/exchange').default;
-	const _ledger = require('./eth/ledger').default;
-	const _nfts = require('./eth/nfts').default;
-	const _user = require('./eth/user').default;
-	const _vp = require('./eth/vote_pool').default;
-	const _web3 = require('./eth/web3').default;
+	const _ex = require('./web3/exchange').default;
+	const _ledger = require('./web3/ledger').default;
+	const _nfts = require('./web3/nfts').default;
+	const _user = require('./web3/user').default;
+	const _vp = require('./web3/vote_pool').default;
+	const _web3 = require('./web3').default;
 	
 	exchange = _ex;
 	ledger = _ledger;

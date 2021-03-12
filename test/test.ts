@@ -1,5 +1,5 @@
 
-import {check} from '../src/models/eth/artifacts';
+import {check} from '../src/models/web3/artifacts';
 import test_sol from './test-sol';
 import test_mod from './test-mod';
 import test_substrate from './test-substrate';

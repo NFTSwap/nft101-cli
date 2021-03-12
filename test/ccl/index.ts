@@ -3,7 +3,7 @@
  * @date 2021-01-04
  */
 
-import web3 from '../../src/web3';
+import web3 from '../../src/models/eth/web3';
 import Happy from 'web3z/happy';
 
 import * as Users from './Users';

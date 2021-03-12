@@ -28,7 +28,7 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3, {web3Support} from './web3';
+import web3, {web3Support} from '.';
 import buffer from 'somes/buffer';
 import * as user from '../user';
 
