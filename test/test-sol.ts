@@ -28,13 +28,15 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3 from '../src/web3';
+import web3 from '../src/models/eth/web3';
 import somes from 'somes';
 // import {rng} from 'somes/rng';
-import {contractAddress as Exchange, AssetStatus} from '../src/artifacts/Exchange';
-import {contractAddress as NFTs} from '../src/artifacts/NFTs';
-import artifacts from '../src/artifacts';
-import * as user from '../src/models/user';
+import {AssetStatus, exchange as ex, user} from '../src/models';
+// import {contractAddress as Exchange} from '../src/models/eth/artifacts/Exchange';
+// import {contractAddress as NFTs} from '../src/artifacts/NFTs';
+import artifacts from '../src/models/eth/artifacts';
+import nfts from '../src/models/eth/nfts';
+// import * as user from '../src/models/user';
 
 async function test() {
 	console.log('ledger.balanceOf()', await artifacts.ledger.api.balanceOf('0x08A8b3135256725f25b44569D6Ef44674c16A237').call());
@@ -62,13 +64,13 @@ export async function newnft(hash_: string, uri_: string, name: string, toExchan
 
 	if (toExchange) {
 		var owner = await nfts.ownerOf(hash).call();
-		if (owner != Exchange) {
+		if (owner != ex.contractAddress) {
 			var category = 0, flags = 0;
 			var data = web3.eth.abi.encodeParameters(
 				['uint16', 'uint16', 'string'], [category, flags, name]
 			);
-			await nfts.safeTransferFrom(address, Exchange, hash, data).call();
-			await nfts.safeTransferFrom(address, Exchange, hash, data).post();
+			await nfts.safeTransferFrom(address, ex.contractAddress, hash, data).call();
+			await nfts.safeTransferFrom(address, ex.contractAddress, hash, data).post();
 		}
 	}
 
@@ -95,10 +97,10 @@ async function nft() {
 		await newnft(hash, uri, 'nft_' + somes.random(), true);
 
 		var tokenId = BigInt(hash);
-		var asset = await artifacts.exchange.api.assetOf({token: NFTs, tokenId }).call();
+		var asset = await artifacts.exchange.api.assetOf({token: nfts.contractAddress, tokenId }).call();
 		if (asset.status == AssetStatus.List) { // sell
 			var order = {
-				token: NFTs, tokenId,
+				token: nfts.contractAddress, tokenId,
 				maxSellPrice: BigInt(1e19),
 				minSellPrice: BigInt(1e18), lifespan: BigInt(1),
 			};

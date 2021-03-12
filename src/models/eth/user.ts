@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2019, hardchain
  * All rights reserved.
- *
+ * 
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *     * Redistributions of source code must retain the above copyright
@@ -14,7 +14,7 @@
  *     * Neither the name of hardchain nor the
  *       names of its contributors may be used to endorse or promote products
  *       derived from this software without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -25,36 +25,71 @@
  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- *
+ * 
  * ***** END LICENSE BLOCK ***** */
 
-import { Root,ReactDom,React } from 'webpkit';
-import router from './router';
-import somes from 'somes';
-// import buffer from 'somes/buffer';
-// import {initialize} from './sdk';
-import {user} from './models';
-import errno_handles from 'webpkit/lib/errno_handles';
-// import {Console} from 'somes/log';
+import web3, {web3Support} from './web3';
+import buffer from 'somes/buffer';
+import * as user from '../user';
 
-import './assets/bootstrap.css';
-import './assets/font.css';
-import './assets/rc.css';
-import './assets/all.css';
-import './assets/css.css';
-import './assets/all2.scss';
+const crypto_tx = require('crypto-tx');
 
-somes.onUncaughtException.on((e)=>errno_handles(e.data));
-somes.onUnhandledRejection.on((e)=>errno_handles(e.data.reason));
+var _address: string = '';
 
-// document.documentElement.style.fontSize = '46px';
-// initialize().catch(console.error);
-// Console.defaultInstance.log('init ok');
+export class ApiIMPL implements user.APIUser {
 
-user.load().then(()=>{
+	// load address
+	async load() {
+		if (!_address) {
+			if (web3Support()) {
+				var mask = web3.metaMask;
 
-	ReactDom.render(
-		<Root routes={router} />,
-		document.querySelector('#app')
-	);
-});
+				var [from] = await mask.request({ method: 'eth_requestAccounts' });
+
+				console.log('eth_requestAccounts', from);
+
+				if (from) {
+					from = '0x' + crypto_tx.toChecksumAddress(buffer.from(from.slice(2), 'hex'));
+				}
+
+				_address = from || '';
+			}
+		}
+
+		return _address;
+	}
+
+	async user() {
+
+		var mask = web3.metaMask;
+
+		var addr = await this.load();
+
+		if (!addr) {
+			// TODO ...
+		}
+
+		var r = await mask.request({
+			method: 'personal_sign',
+			params: [addr, 'NFTSwap uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
+		});
+
+		console.log('personal_sign', r);
+
+		return { address: addr };
+	}
+
+	async address() {
+		if (! await this.load()) {
+			await this.user();
+		}
+		return _address;
+	}
+
+	addressNoJump() {
+		return _address;
+	}
+
+}
+
+export default new ApiIMPL;

@@ -31,13 +31,7 @@
 import {Page,React,Link} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
-import ledger from '../../models/ledger';
-import vp from '../../models/vote_pool';
-import ex from '../../models/exchange';
-import {Vote} from '../../artifacts/VotePool';
-import artifacts from '../../artifacts';
-import {SellStore,OrderStatus} from '../../artifacts/Exchange';
-import * as user from '../../models/user';
+import {vote_pool as vp, exchange as ex, SellStore,OrderStatus,Vote, user, ledger} from '../../models';
 import * as util from '../../util';
 import './index.scss';
 import Loading from 'webpkit/lib/loading';
@@ -66,7 +60,7 @@ export default class extends Page {
 
 		console.log('canRelease', canRelease);
 
-		console.log('ledger.balanceOf(artifacts.vote_pool.address)', util.price(await ledger.balanceOf(artifacts.vote_pool.address)));
+		console.log('ledger.balanceOf(artifacts.vote_pool.address)', util.price(await ledger.balanceOf(vp.contractAddress)));
 
 		// console.log('vp.ordersById', await vp.ordersById(BigInt(21)));
 

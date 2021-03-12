@@ -6,67 +6,12 @@
 import {Address,Uint256} from 'web3z/solidity_types'
 import {Result} from 'web3z/happy';
 import * as json from './Exchange.json';
-import {contracts} from '../../config';
+import {contracts} from '../../../../config';
+import {SellStore,NFTAsset,AssetID,SellOrder,OrderStatus,Asset} from '../../exchange';
 
 export const abi = json.abi;
 export const contractName = json.contractName;
 export const contractAddress = contracts.exchange;// '0x7322ee767aaD2dEf9e3527Dc1230fB5f09ead682';
-
-export interface AssetID {
-	token: Address;
-	tokenId: Uint256;
-}
-
-export enum AssetStatus {
-	List,
-	Selling,
-}
-
-export interface Asset {
-	owner: Address;
-	status: AssetStatus;
-	category: number;
-	flags: number;
-	name: string;
-	lastOrderId: Uint256;
-	lastDealOrderId: Uint256;
-	arrayIndex: Uint256;
-}
-
-export interface SellStore {
-	token: Address;
-	tokenId: Uint256;
-	maxSellPrice: Uint256;
-	minSellPrice: Uint256;
-	lifespan: Uint256;
-	expiry: Uint256;
-	buyPrice: Uint256;
-	bigBuyer: Address;
-}
-
-export interface SellOrder {
-	token: Address;
-	tokenId: Uint256;
-	maxSellPrice: Uint256;
-	minSellPrice: Uint256;
-	lifespan: Uint256;
-}
-
-export interface SellingNFTData {
-	orderId: Uint256;
-	totalVotes: Uint256;
-	order: SellStore;
-}
-
-export interface NFTAsset {
-	asset: Asset;
-	token: Address;
-	tokenId: Uint256;
-	tokenURI: string;
-	selling?: SellingNFTData;
-}
-
-export enum OrderStatus { Ing, Expired, DealDone }
 
 export default interface Exchange {
 	feePlan(): Result<Address>;

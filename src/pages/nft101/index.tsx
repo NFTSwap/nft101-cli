@@ -32,7 +32,7 @@ import { Page, React } from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
 import NftItem from '../../com/nft_item';
-import ex, {NFTAsset} from '../../models/exchange';
+import { exchange as ex, NFTAsset} from '../../models';
 import './index.scss';
 
 export default class extends Page {

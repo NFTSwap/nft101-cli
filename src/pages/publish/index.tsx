@@ -31,13 +31,11 @@
 import {Page,React, Link} from 'webpkit';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
-import artifacts from '../../artifacts';
-import nfts from '../../models/nfts';
 import './index.scss';
 import Loading from 'webpkit/lib/loading';
 import Dialog from 'webpkit/lib/dialog';
-import web3 from '../../web3';
-import * as user from '../../models/user';
+// import web3 from '../../models/eth/web3';
+import {user,nfts, exchange as ex, encodeParameters} from '../../models';
 import buffer from 'somes/buffer';
 import {rng} from 'somes/rng';
 
@@ -46,7 +44,7 @@ export default class extends Page {
 	state = { new_TokenId: ''};
 
 	async _Transfer(token: string, tokenId: string, erc721_name: string) {
-		var data_str = web3.eth.abi.encodeParameters(
+		var data_str = encodeParameters(
 			['uint16', 'uint16', 'string'], [0, 0, erc721_name]
 		);
 		var data = buffer.from(data_str.slice(2), 'hex');
@@ -54,7 +52,7 @@ export default class extends Page {
 
 		try {
 			await Loading.show();
-			await nfts.safeTransferFrom(token, address, artifacts.exchange.address, BigInt(tokenId), data);
+			await nfts.safeTransferFrom(token, address, ex.contractAddress, BigInt(tokenId), data);
 			Dialog.alert('NFT Swap OK', ()=>(location.href = '/mynft'));
 		} finally {
 			Loading.close();
@@ -81,11 +79,11 @@ export default class extends Page {
 	}
 
 	async _NEWNFT() {
-		var token = artifacts.nfts.address;
+		var token = nfts.contractAddress;
 		var tokenId = '0x' + rng(32).toString('hex');
 		var name = (this.refs.nft_name as HTMLInputElement).value;
 		var uri = (this.refs.nft_uri as HTMLInputElement).value;
-		var data_str = web3.eth.abi.encodeParameters(
+		var data_str = encodeParameters(
 			['uint16', 'uint16', 'string'], [0, 0, name]
 		);
 		var data = buffer.from(data_str.slice(2), 'hex');
@@ -93,7 +91,7 @@ export default class extends Page {
 		try {
 			await Loading.show();
 			this.setState({ new_TokenId: tokenId });
-			await nfts.safeMintURI(token, artifacts.exchange.address, BigInt(tokenId), uri, data);
+			await nfts.safeMintURI(token, ex.contractAddress, BigInt(tokenId), uri, data);
 		} finally {
 			Loading.close();
 		}
@@ -131,7 +129,7 @@ export default class extends Page {
 						<div className="txt">
 							<span>创建新的NFT资产</span>
 						</div>
-						ERC721协约：{artifacts.exchange.address}<br /><br />
+						ERC721协约：{ex.contractAddress}<br /><br />
 						ERC721资产ID：{this.state.new_TokenId}<br /><br />
 						ERC721资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
 						ERC721资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
@@ -152,7 +150,7 @@ export default class extends Page {
 					<div className="panel">
 						<div className="txt">
 							<h3>或</h3>
-							<span>将ERC721资产转移到 {artifacts.exchange.address} 协约 </span>
+							<span>将ERC721资产转移到 {ex.contractAddress} 协约 </span>
 						</div>
 						<button onClick={()=>this._Sell()}>转移完成去出售</button>
 					</div>

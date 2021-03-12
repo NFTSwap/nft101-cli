@@ -9,7 +9,9 @@
 		"build": "NODE_ENV=prod node node_modules/webpkit/webpack/build.js"
 	},
 	"dependencies": {
-		"webpkit": "file:deps/webpkit",
-		"web3z": "file:deps/web3z"
+		"@polkadot/api": "^4.0.3",
+		"@polkadot/extension-dapp": "^0.37.2",
+		"web3z": "file:deps/web3z",
+		"webpkit": "file:deps/webpkit"
 	}
 }

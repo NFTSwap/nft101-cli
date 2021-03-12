@@ -6,7 +6,7 @@
 import {Address,Uint256, Uint8} from 'web3z/solidity_types';
 import {Result} from 'web3z/happy';
 import * as json from './Ledger.json';
-import {contracts} from '../../config';
+import {contracts} from '../../../../config';
 
 export const abi = json.abi;
 export const contractName = json.contractName;

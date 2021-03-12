@@ -30,7 +30,7 @@
 
 import buffer from 'somes/buffer';
 import somes from 'somes';
-import web3 from '../src/web3';
+import web3 from '../src/models/eth/web3';
 import ccl from './ccl';
 
 const crypto_tx = require('crypto-tx');
