@@ -54,8 +54,8 @@ const routes = [
 		page: () => import('./pages/nft101'),
 	},
 	{
-		path: '/metamask',
-		page: () => import('./pages/metamask'),
+		path: '/install',
+		page: () => import('./pages/install'),
 	},
 	{
 		path: '/publish',

@@ -59,7 +59,7 @@ export default class extends ViewController<{assets: NFTAsset}> {
 				</Link>
 				<div className="collectible-card__info-container">
 					<div className="collectible-card__first-section" style={{ width: '95%' }}>
-						<a className="collectible-card__name" href="#">{asset.name || tokenId}</a>
+						<a className="collectible-card__name" href="#">{asset.name || String(tokenId)}</a>
 					</div>
 
 					<div className="collectible-card__price-item-container">

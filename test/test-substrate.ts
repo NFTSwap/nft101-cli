@@ -4,7 +4,7 @@ import { ApiPromise, WsProvider } from '@polkadot/api';
 // import { IKeyringPair } from '@polkadot/types/types';
 // import { Keyring } from '@polkadot/keyring';
 // import keyring from '@polkadot/ui-keyring';
-import { web3Enable, web3Accounts, web3FromSource } from '@polkadot/extension-dapp';
+import { web3Enable, web3Accounts, web3FromSource, isWeb3Injected } from '@polkadot/extension-dapp';
 import { InjectedAccountWithMeta } from '@polkadot/extension-inject/types';
 import somes from 'somes';
 
@@ -212,7 +212,7 @@ async function _test4(_api: ApiPromise, accounts: InjectedAccountWithMeta[]) {
 
 	var uri = 'https://img20.360buyimg.com/pop/s1180x940_jfs/t1/141199/10/14094/60678/60482694E2b1f76db/554fbbd50e4dbb97.jpg.webp';
 
-	var signer = new LazySigner(injected.signer);
+	var signer = new LazySigner(injected.signer, account.address);
 
 	var call = await _api.tx.nftModule.create(uri).signAsync(account.address, {signer});
 	// var call = await _api.tx.nftModule.remove(100).signAsync(account.address, {signer});
@@ -264,7 +264,13 @@ export default async function() {
 
 	await api.isReady;
 
-	await web3Enable('NFTSwap');
+	// debugger
+
+	// console.log(isWeb3Injected);
+
+	var InjectedExtension = await web3Enable('NFTSwap');
+
+	debugger
 
 	var accounts = await web3Accounts();
 

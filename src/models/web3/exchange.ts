@@ -56,8 +56,10 @@ export class ApiIMPL implements ex.APIExchange {
 	}
 
 	// 订单信息
-	bids(orderId: bigint) {
-		return this._artifact.bids(orderId).call();
+	async bids(orderId: bigint) {
+		var order = await this._artifact.bids(orderId).call();
+		order.expiryBlock = BigInt(0);
+		return order;
 	}
 
 	// 取出资产

@@ -125,7 +125,7 @@ export default class extends Page {
 					</div>
 
 					<div className="balance-of">
-						<h3>BalanceOf({util.price(balanceOf - canRelease)}) + Vote income({util.price(canRelease)}) = {util.price(balanceOf)} ETH </h3>
+						<h3>BalanceOf({util.price(balanceOf - canRelease)}) + Vote income({util.price(canRelease)}) = {util.price(balanceOf)} </h3>
 						<button onClick={()=>this._Withdraw()}>Withdraw</button>
 					</div>
 
@@ -145,7 +145,7 @@ export default class extends Page {
 										<div className="txt">
 											<div>lockId: {String(e.lockId)}</div>
 											<div>voteId: {String(e.lockId)}</div>
-											<div>amount: {util.price(e.amount)}ETH</div>
+											<div>amount: {util.price(e.amount)}</div>
 											<div>orderId: {String(vote.orderId)}</div>
 											<div>token: {String(order.token)}</div>
 											<div>tokenId: {'0x' + order.tokenId.toString(16)}</div>

@@ -17,11 +17,7 @@ export class ApiIMPL implements ex.APILedger {
 		to: string;
 		value: bigint;
 	}> {
-		return Promise.resolve({
-			from: '',
-			to: '',
-			value: BigInt(0),
-		});
+		throw Error.new(`You can't withdraw money`);
 	}
 
 	// 查看锁定的eth资产列表（投票列表）现在的协约竞拍结束后不能自动取消投票

@@ -28,39 +28,19 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
+import somes from 'somes';
 import { ApiPromise, WsProvider } from '@polkadot/api';
 import { SignerOptions } from '@polkadot/api/submittable/types';
-import { Signer, SignerResult, SignerPayloadJSON, SignerPayloadRaw, } from '@polkadot/types/types';
+import { Signer, SignerResult, SignerPayloadJSON, SignerPayloadRaw, ISubmittableResult } from '@polkadot/types/types';
 import { web3Enable, web3Accounts, web3FromSource } from '@polkadot/extension-dapp';
 import * as cfg from '../../../config';
+import {InjectedAccountWithMeta,} from '@polkadot/extension-inject/types';
+import type { ApplyExtrinsicResult } from '@polkadot/types/interfaces';
 
+const AbiCoder = require('web3-eth-abi');
 const crypto_tx = require('crypto-tx');
 
-const types = {
-	"Address": "MultiAddress",
-	"LookupSource": "MultiAddress",
-	"Nft": "String",
-	"NftId": "u128",
-	"OrderId": "u128",
-	"OrderOf": {
-		"order_id": "u128",
-		"start_price": "Balance",
-		"end_price": "Balance",
-		"nft_id": "u128",
-		"keep_block_num": "u32",
-		"owner": "Hash"
-	},
-	"BidOf": {
-		"order_id": "u128",
-		"price": "Balance",
-		"owner": "Hash"
-	},
-	"VoteOf": {
-		"order_id": "u128",
-		"amount": "Balance",
-		"owner": "Hash"
-	}
-};
+const types = require('../../../deps/NFT101-RUST/pallets/nft/types.json');
 
 const provider = new WsProvider(cfg.substrate); // wss://rpc.polkadot.io
 
@@ -69,9 +49,15 @@ export class LazySigner implements Signer {
 	private _signer: any;
 	private _blockHash: any = '';
 	private _era: any = '';
+	private _from: string;
 
-	constructor(signer: Signer) {
+	get from() {
+		return this._from;
+	}
+
+	constructor(signer: Signer, from: string) {
 		this._signer = signer;
+		this._from = from;
 	}
 
 	private _hash(data: any): string {
@@ -116,28 +102,169 @@ export class LazySigner implements Signer {
 	}
 }
 
-export function encodeParameters() {
-	return '0x00';
+export function encodeParameters(types: any[], paramaters: any[]) {
+	return AbiCoder.encodeParameters(types, paramaters);
+}
+
+export function decodeParameters(types: any[], value: string) {
+	var r = AbiCoder.decodeParameters(types, value);
+	r.length = types.length;
+	return Array.toArray(r);
+}
+
+export interface MethodCall {
+	call(): Promise<ApplyExtrinsicResult>;
+	post(event?: string): Promise<any>;
+	// post(cb: (result: ISubmittableResult, extra: any) => void | Promise<void>): Promise<() => void>;
+}
+
+export interface MethodContext {
+	(...args: any[]): MethodCall;
 }
 
 export class Substrate {
-	constructor() {
-		// TODO ...
+
+	private __api?: ApiPromise;
+	private _account?: InjectedAccountWithMeta;
+	private _defaultAccount: string = '';
+	private _methods: Dict<MethodContext> = function(self: Substrate) {
+		return new Proxy(self, {
+			get(_: any, prop_: any) {
+				var prop = String(prop_);
+				var func = self.api.tx.nftModule[prop];
+				if (!func) {
+					throw Error.new(`Method "${prop}" not found`);
+				}
+				return function(...args: any[]) {
+					var opts = {};
+					var call = func(...args);
+					return {
+						call: function() {
+							return self._Call(call, opts);
+						},
+						post: function(event: any) {
+							return self._Post(call, opts, event);
+						},
+					} as unknown as MethodCall;
+				};
+			}
+		});
+	}(this);
+
+	get defaultAccount() {
+		return this._defaultAccount;
+	}
+
+	get api() {
+		return this.__api as ApiPromise;
+	}
+
+	get consts() {
+		return this.api.consts.nftModule;
+	}
+
+	get errors() {
+		return this.api.errors.nftModule;
+	}
+
+	get events() {
+		return this.api.events.nftModule;
+	}
+
+	get query() {
+		return this.api.query.nftModule;
+	}
+
+	get tx() {
+		return this.api.tx.nftModule;
+	}
+
+	get methods() {
+		return this._methods;
+	}
+
+	private async _callSign(call: any, opts: {signer?:LazySigner, call?: any }) {
+		if (!opts.signer) {
+			opts.signer = await this.signer();
+			opts.call = await call.signAsync(opts.signer.from, {signer: opts.signer});
+		}
+		return { call: opts.call, signer: opts.signer };
+	}
+
+	private async _Call(call: any, opts: {signer?:LazySigner, submittable?: any}) {
+		var {call, signer} = await this._callSign(call, opts);
+		return await call.dryRun(signer.from, signer.options);
+	}
+
+	private async _Post(call: any, opts: {signer?:LazySigner, submittable?: any}, event: any) {
+		// var {call} = await this._callSign(call, opts);
+		var r = await this._Call(call, opts); // tryRun
+
+		somes.assert(r.asOk.isOk, r.asOk.toHuman() + " => " + r.asOk.toString());
+
+		return await somes.promise(async (resolve,reject)=>{
+			await call.send(function({events,status}: ISubmittableResult, extra: any) {
+				console.log('Transaction status:', status.type);
+				if (status.isInBlock) {
+					console.log('Included at block hash', status.asInBlock.toHex());
+					console.log('Events:');
+					resolve(events.filter(({ event: { data, method, section }, phase }) => {
+						console.log('\t', phase.toString(), `: ${section}.${method}`, data.toString());
+						return method == event;
+					}).map(e=>e.event.data.toJSON()));
+				} else if (status.isFinalized) {
+					console.log('Finalized block hash', status.asFinalized.toHex());
+				}
+			});
+		})
+	}
+
+	async signer() {
+		var account = await this.getInjectedAccount();
+		var injected = await web3FromSource(account.meta.source);
+		return new LazySigner(injected.signer, account.address);
+	}
+
+	async getInjectedAccount() {
+		if (!this._account) {
+			await web3Enable('NFTSwap');
+			var metas = await web3Accounts();
+			if (metas.length) {
+				this._account = metas[0];
+			} else {
+				if (location.href.indexOf('/install') == -1) {
+					location.href = '/install';
+				}
+				throw 'Not InjectedAccountWithMeta';
+			}
+		}
+		return this._account;
+	}
+
+	async getDefaultAccount() {
+		if (!this._defaultAccount) {
+			var meta = await this.getInjectedAccount();
+			this._defaultAccount = meta.address;
+		}
+		return this._defaultAccount;
 	}
 
 	async initialize() {
 		// Create our API with a default connection to the local node
-		var api = await ApiPromise.create({ provider, types });
+		this.__api = await ApiPromise.create({ provider, types });
 
-		await api.isReady;
+		await this.api.isReady;
 
-		await web3Enable('NFTSwap');
-
-		var accounts = await web3Accounts();
-
-		// TODO ...
+		if (isSupport()) {
+			if (location.href.indexOf('/install') == -1)
+				await this.getDefaultAccount();
+		}
 	}
 
+}
+
+export function isSupport() {
+	return !!(globalThis as any).injectedWeb3;
 }
 
 export default new Substrate;

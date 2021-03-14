@@ -33,7 +33,7 @@ import router from './router';
 import somes from 'somes';
 // import buffer from 'somes/buffer';
 // import {initialize} from './sdk';
-import {user} from './models';
+import {initialize} from './models';
 import errno_handles from 'webpkit/lib/errno_handles';
 // import {Console} from 'somes/log';
 
@@ -51,10 +51,14 @@ somes.onUnhandledRejection.on((e)=>errno_handles(e.data.reason));
 // initialize().catch(console.error);
 // Console.defaultInstance.log('init ok');
 
-user.load().then(()=>{
-
+initialize().then(()=>{
 	ReactDom.render(
 		<Root routes={router} />,
 		document.querySelector('#app')
 	);
+
+	if (process.env.NODE_ENV == 'development') {
+		import('../test/test');
+	}
+
 });

@@ -28,66 +28,36 @@
  * 
  * ***** END LICENSE BLOCK ***** */
 
-import web3, {web3Support} from '.';
-import buffer from 'somes/buffer';
+import web3 from '.';
 import * as user from '../user';
-
-const crypto_tx = require('crypto-tx');
-
-var _address: string = '';
 
 export class ApiIMPL implements user.APIUser {
 
-	// load address
-	async load() {
-		if (!_address) {
-			if (web3Support()) {
-				var mask = web3.metaMask;
-
-				var [from] = await mask.request({ method: 'eth_requestAccounts' });
-
-				console.log('eth_requestAccounts', from);
-
-				if (from) {
-					from = '0x' + crypto_tx.toChecksumAddress(buffer.from(from.slice(2), 'hex'));
-				}
-
-				_address = from || '';
-			}
-		}
-
-		return _address;
-	}
+	private _address: string = '';
 
 	async user() {
-
-		var mask = web3.metaMask;
-
-		var addr = await this.load();
-
-		if (!addr) {
-			// TODO ...
+		if (!this._address) {
+			this._address = await web3.getDefaultAccount();
 		}
+		var address = this._address;
 
-		var r = await mask.request({
+		// TODO sign ...
+		var r = await web3.metaMask.request({
 			method: 'personal_sign',
-			params: [addr, 'NFTSwap uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
+			params: [address, 'NFTSwap uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
 		});
 
 		console.log('personal_sign', r);
 
-		return { address: addr };
+		return { address };
 	}
 
 	async address() {
-		if (! await this.load()) {
-			await this.user();
-		}
-		return _address;
+		return (await this.user()).address;
 	}
 
 	addressNoJump() {
-		return _address;
+		return this._address || web3.web3.defaultAccount || '';
 	}
 
 }

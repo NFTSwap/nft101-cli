@@ -18,7 +18,8 @@ export var nfts: APINFTs;
 export var user: APIUser;
 export var vote_pool: APIVotePool;
 
-export var encodeParameters: (types: any[], paramaters: any[]) => string;
+var _encodeParameters: (types: any[], paramaters: any[]) => string;
+var _initialize: () => Promise<void>;
 
 if (cfg.platform == 'substrate') {
 
@@ -27,7 +28,7 @@ if (cfg.platform == 'substrate') {
 	const _nfts = require('./substrate/nfts').default;
 	const _user = require('./substrate/user').default;
 	const _vp = require('./substrate/vote_pool').default;
-	const _substrate = require('./substrate');
+	const _substrate = require('./substrate').default;
 	
 	exchange = _ex;
 	ledger = _ledger;
@@ -35,7 +36,8 @@ if (cfg.platform == 'substrate') {
 	user = _user;
 	vote_pool = _vp;
 
-	encodeParameters = _substrate.encodeParameters;
+	_encodeParameters = (...args: any[])=>_substrate.encodeParameters(...args);
+	_initialize = ()=>_substrate.initialize();
 } else {
 
 	const _ex = require('./web3/exchange').default;
@@ -51,5 +53,9 @@ if (cfg.platform == 'substrate') {
 	user = _user;
 	vote_pool = _vp;
 
-	encodeParameters = _web3.eth.abi.encodeParameters;
+	_encodeParameters = (...args: any[])=>_web3.encodeParameters(...args);
+	_initialize = ()=>_web3.initialize();
 }
+
+export const encodeParameters = _encodeParameters;
+export const initialize = _initialize;

@@ -23,6 +23,7 @@ export interface SellStore {
 	minSellPrice: Uint256;
 	lifespan: Uint256;
 	expiry: Uint256;
+	expiryBlock: Uint256;
 	buyPrice: Uint256;
 	bigBuyer: Address;
 }

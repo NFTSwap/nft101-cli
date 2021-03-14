@@ -5,8 +5,6 @@ export interface User {
 
 export interface APIUser {
 
-	load(): Promise<string>;
-
 	user(): Promise<User>;
 
 	address(): Promise<string>;

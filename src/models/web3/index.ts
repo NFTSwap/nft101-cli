@@ -30,19 +30,28 @@
 
 import { Web3Z } from 'web3z';
 import { TransactionQueue } from 'web3z/queue';
+import buffer from 'somes/buffer';
+
+const AbiCoder = require('web3-eth-abi');
+const crypto_tx = require('crypto-tx');
+
+export function encodeParameters(types: any[], paramaters: any[]) {
+	return AbiCoder.encodeParameters(types, paramaters);
+}
 
 export class Web3IMPL extends Web3Z {
 
 	private _metaMask: any;
 	private _txQueue: TransactionQueue = new TransactionQueue(this);
+	private _defaultAccount?: string;
 
 	get metaMask() {
 		if (!this._metaMask) {
 			this._metaMask = (globalThis as any).ethereum;
-			// TODO .. check _metaMask
+			// check _metaMask
 			if (!this._metaMask) {
-				if (location.href.indexOf('/metamask') == -1) {
-					location.href.indexOf('/metamask');
+				if (location.href.indexOf('/install') == -1) {
+					location.href = '/install';
 				}
 			}
 			var currentChainId = this._metaMask.chainId;
@@ -59,9 +68,31 @@ export class Web3IMPL extends Web3Z {
 		return this.metaMask;
 	}
 
+	async getDefaultAccount() {
+		if (!this._defaultAccount) {
+			var mask = this.metaMask;
+			var [from] = await mask.request({ method: 'eth_requestAccounts' });
+
+			console.log('eth_requestAccounts', from);
+
+			if (from) {
+				from = '0x' + crypto_tx.toChecksumAddress(buffer.from(from.slice(2), 'hex'));
+			}
+			this._defaultAccount = (from || '') as string;
+			this.setDefaultAccount(this._defaultAccount);
+		}
+		return this._defaultAccount;
+	}
+
+	async initialize() {
+		if (isSupport()) {
+			await this.getDefaultAccount();
+		}
+	}
+
 }
 
-export function web3Support() {
+export function isSupport() {
 	return !!(globalThis as any).ethereum;
 }
 

@@ -29,23 +29,35 @@
  * ***** END LICENSE BLOCK ***** */
 
 import * as user from '../user';
+import substrate from '.';
 
 export class ApiIMPL implements user.APIUser {
 
-	load(): Promise<string> {
-		return Promise.resolve('');
+	private _address: string = '';
+
+	async user() {
+		if (!this._address) {
+			this._address = await substrate.getDefaultAccount();
+		}
+		var address = this._address;
+
+		// TODO sign ...
+		// var r = await web3.metaMask.request({
+		// 	method: 'personal_sign',
+		// 	params: [address, 'NFTSwap uses this cryptographic signature in place of a password, verifying that you are the owner of this Ethereum address.'],
+		// });
+
+		// console.log('personal_sign', r);
+
+		return { address };
 	}
 
-	user(): Promise<user.User> {
-		return Promise.resolve({address: ''});
+	async address() {
+		return (await this.user()).address;
 	}
 
-	address(): Promise<string> {
-		return Promise.resolve('');
-	}
-
-	addressNoJump(): string {
-		return '';
+	addressNoJump() {
+		return this._address || substrate.defaultAccount || '';
 	}
 
 }

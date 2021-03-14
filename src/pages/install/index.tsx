@@ -10,7 +10,7 @@ export default class extends Page {
 
 	render() {
 		return (
-			<div>Install metamask</div>
+			<div><a href="">Install metamask</a></div>
 		);
 	}
 }
