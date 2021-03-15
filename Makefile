@@ -23,3 +23,7 @@ dev: config
 
 config:
 	@$(call cfg,$(ENV))
+
+pull:
+	git pull
+	git submodule update --init
