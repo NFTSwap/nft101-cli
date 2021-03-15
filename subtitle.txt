@@ -1,0 +1,117 @@
+先运行基于substrate开发的链节点
+First, run the chain node developed based on the "substrate"
+
+刷新区块链浏览器
+Refresh blockchain browser
+
+网络有点慢
+The Internet is a bit slow
+
+给钱包账号转一些钱
+Transfer some money to your wallet account
+
+转2000个
+Turn 2000
+
+ok已经到账了
+The money has arrived
+
+运行dapp前需要先安装基于substrate的钱包
+Before running DAPP, you need to install the wallet based on the “substrate”
+
+dot与基于substrate的dapp都可以用这个钱包
+This wallet can be used by dot and DAPP based on submit
+
+然后刷新我们的dapp
+Then refresh our DAPP
+
+NFT101这边显示的是资产的排行版，总共101个，现在还没有数据
+Nft101 shows the ranking version of assets, with a total of 101. There is no data yet
+
+这是我的资产
+This is my asset
+
+然后我们去发布一个资产
+And then we're going to publish an asset
+
+填写资产名称与链接地址
+Fill in the asset name and link address
+
+创建，签名上链
+Create, sign and push chain
+
+这个必须要安装钱包才可以
+This one has to have a wallet installed to run
+
+ok上链成功，现在去出售
+OK, successful on push chain, now to sell
+
+这个图片是我随便找的
+I found this picture at random
+
+现在看我MYNFT应该有数据了
+Now I think mynft should have data
+
+现点出售按钮
+Click to sell button
+
+最小价格100
+Minimum price 100
+
+最大价格200
+Maximum price 200
+
+过期时间是以天为单位
+The expiration time is in days
+
+签名上链
+Sign and push chain
+
+ok成功了
+OK, it worked
+
+投票 10个
+10 votes
+
+签名上链
+Sign and push chain
+
+ok成功了
+OK, it worked
+
+现在的界面比较简陋，以后需要重点优化
+Now the interface is relatively simple, and it needs to be optimized in the future
+
+刚刚投票的已经显示出来了
+The vote just now has been shown
+
+继续投11票
+Continue to vote 11
+
+现在看101应该有数据了，这里最多显示101个
+Now look at 101. There should be data. The maximum number is 101
+
+现在购买吧，其实最终的界面不应该显示购买按钮，
+因为是自己出售的，
+但为方便测试所以让自己也可以购买
+Buy now. In fact, the final interface should not display the "buy" button，
+Because I sell things myself,
+But for the convenience of testing, so you can buy it yourself
+
+200直接成交
+200 yuan direct deal
+
+购买成功
+Successful purchase
+
+现在看101页面应该没有数据了
+Now look at page 101, there should be no data
+
+功能基本上这样的，还是比较简陋，但是基本的业务逻辑都有了
+The function is basically like this, which is still relatively simple, but the basic business logic is available
+
+我们看一下区块链浏览器里的数据
+Let's take a look at the data in the blockchain browser
+
+这是创建资产时的日志
+This is the log when the asset was created
