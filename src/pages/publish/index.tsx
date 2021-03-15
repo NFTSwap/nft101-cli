@@ -131,11 +131,18 @@ export default class extends Page {
 						<div className="txt">
 							<span>创建新的NFT资产</span>
 						</div>
-						ERC721协约：{ex.contractAddress}<br /><br />
-						ERC721资产ID：{this.state.new_TokenId}<br /><br />
-						ERC721资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
-						ERC721资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
-						<div><button onClick={()=>this._NEWNFT()}>创建</button></div>
+						{cfg.platform == 'eth'?<div>
+							ERC721协约：{ex.contractAddress}<br /><br />
+							ERC721资产ID：{this.state.new_TokenId}<br /><br />
+							ERC721资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
+							ERC721资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
+						</div>: <div>
+							{/* NFT资产ID：{this.state.new_TokenId}<br /><br /> */}
+							NFT资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
+							NFT资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
+						</div>
+						}
+						<div><button onClick={()=>this._NEWNFT()}>Create</button></div>
 					</div>
 
 					{cfg.platform == 'eth'?
