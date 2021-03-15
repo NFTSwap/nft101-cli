@@ -28,7 +28,7 @@ if (cfg.platform == 'substrate') {
 	const _nfts = require('./substrate/nfts').default;
 	const _user = require('./substrate/user').default;
 	const _vp = require('./substrate/vote_pool').default;
-	const _substrate = require('./substrate').default;
+	const _substrate = require('./substrate');
 	
 	exchange = _ex;
 	ledger = _ledger;
@@ -37,7 +37,7 @@ if (cfg.platform == 'substrate') {
 	vote_pool = _vp;
 
 	_encodeParameters = (...args: any[])=>_substrate.encodeParameters(...args);
-	_initialize = ()=>_substrate.initialize();
+	_initialize = ()=>_substrate.default.initialize();
 } else {
 
 	const _ex = require('./web3/exchange').default;
@@ -45,7 +45,7 @@ if (cfg.platform == 'substrate') {
 	const _nfts = require('./web3/nfts').default;
 	const _user = require('./web3/user').default;
 	const _vp = require('./web3/vote_pool').default;
-	const _web3 = require('./web3').default;
+	const _web3 = require('./web3');
 	
 	exchange = _ex;
 	ledger = _ledger;
@@ -54,7 +54,7 @@ if (cfg.platform == 'substrate') {
 	vote_pool = _vp;
 
 	_encodeParameters = (...args: any[])=>_web3.encodeParameters(...args);
-	_initialize = ()=>_web3.initialize();
+	_initialize = ()=>_web3.default.initialize();
 }
 
 export const encodeParameters = _encodeParameters;
