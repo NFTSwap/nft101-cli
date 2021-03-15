@@ -91,11 +91,10 @@ Continue to vote 11
 现在看101应该有数据了，这里最多显示101个
 Now look at 101. There should be data. The maximum number is 101
 
-现在购买吧，其实最终的界面不应该显示购买按钮，
-因为是自己出售的，
+现在购买吧，其实最终的界面不应该显示购买按钮，因为是自己出售的
 但为方便测试所以让自己也可以购买
 Buy now. In fact, the final interface should not display the "buy" button，
-Because I sell things myself,
+Because I sell things myself
 But for the convenience of testing, so you can buy it yourself
 
 200直接成交
