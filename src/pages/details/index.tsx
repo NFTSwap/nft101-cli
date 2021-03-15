@@ -65,12 +65,12 @@ export default class extends Page<{token: string; tokenId: string}> {
 	}
 
 	async _fetchData() {
-		var data = await ex.assetSellingOf(this.params.token, BigInt(this.params.tokenId))
+		var data = await ex.assetSellingOf(this.params.token||'', BigInt(this.params.tokenId));
 		var historyBuys = data.selling ? await ex.historyBuys(data.selling.orderId): null;
 		this.setState({ data, historyBuys });
 
-		if (data.selling)
-			await this._test(data.selling);
+		// if (data.selling)
+		// 	await this._test(data.selling);
 	}
 
 	private async _vote(data: NFTAsset) {
@@ -90,13 +90,14 @@ export default class extends Page<{token: string; tokenId: string}> {
 
 	private async _sell(data: NFTAsset) {
 		try {
-			var { maxSellPrice, ok } = await new Promise((r)=>{
-				Dialog.prompt({ text: 'Input max sell price' }, (maxSellPrice, ok)=>r({maxSellPrice, ok}));
-			});
-			if (!ok) return;
 
 			var { minSellPrice, ok } = await new Promise((r)=>{
 				Dialog.prompt({ text: 'Input min sell price' }, (minSellPrice, ok)=>r({minSellPrice, ok}));
+			});
+			if (!ok) return;
+
+			var { maxSellPrice, ok } = await new Promise((r)=>{
+				Dialog.prompt({ text: 'Input max sell price' }, (maxSellPrice, ok)=>r({maxSellPrice, ok}));
 			});
 			if (!ok) return;
 
@@ -196,12 +197,12 @@ export default class extends Page<{token: string; tokenId: string}> {
 				</div>
 
 				<div className="collectible-detail__collectible-current-bid">
-					<p><span style={{display: 'inline-block', overflow: 'hidden'}}>&nbsp;Max Sell Price: &nbsp;{util.price(selling.order.maxSellPrice)} <span
+					<p><span style={{display: 'inline-block', overflow: 'hidden'}}>&nbsp;Min Sell Price: &nbsp;{util.price(selling.order.minSellPrice)} <span
 								className="eth-symbol" style={{fontSize: '12px'}}>Ξ</span></span></p>
 				</div>
 
 				<div className="collectible-detail__collectible-current-bid">
-					<p><span style={{display: 'inline-block', overflow: 'hidden'}}>&nbsp;Min Sell Price: &nbsp;{util.price(selling.order.minSellPrice)} <span
+					<p><span style={{display: 'inline-block', overflow: 'hidden'}}>&nbsp;Max Sell Price: &nbsp;{util.price(selling.order.maxSellPrice)} <span
 								className="eth-symbol" style={{fontSize: '12px'}}>Ξ</span></span></p>
 				</div>
 
@@ -253,7 +254,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 
 						<div className="collectible-actions-container">
 
-							{data.selling && asset.owner != address ?
+							{data.selling /*&& asset.owner != address*/ ?
 							<div className="collectible-actions-btn-wrapper">
 								<a href="#" onClick={()=>this._buy(data)}>
 									<button type="button" 

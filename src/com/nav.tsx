@@ -29,6 +29,7 @@
  * ***** END LICENSE BLOCK ***** */
 
 import { ViewController, React, Link } from 'webpkit';
+import * as cfg from '../../config';
 
 export default class extends ViewController {
 
@@ -59,10 +60,11 @@ export default class extends ViewController {
 										className="desktop-nav-link" to="/mynft"><button type="button"
 											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">MYNFT</button>
 									</Link>
+									{cfg.platform == 'eth'?
 									<Link
 										className="desktop-nav-link" to="/income"><button type="button"
 											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">INCOME</button>
-									</Link>
+									</Link>: null}
 									<Link
 										className="desktop-nav-link active" to="/publish"><button type="button"
 											className="md-btn md-btn--flat md-btn--text md-pointer--hover md-text--theme-primary md-ink--primary md-inline-block">PUBLISH</button>

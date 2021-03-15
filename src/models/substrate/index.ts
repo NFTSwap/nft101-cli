@@ -228,16 +228,23 @@ export class Substrate {
 
 	async getInjectedAccount() {
 		if (!this._account) {
-			await web3Enable('NFTSwap');
-			var metas = await web3Accounts();
-			if (metas.length) {
-				this._account = metas[0];
-			} else {
+			var i = 5;
+			var metas: InjectedAccountWithMeta[] = [];
+			while(i--) {
+				await web3Enable('NFTSwap');
+				var metas = await web3Accounts();
+				if (metas.length) {
+					this._account = metas[0];
+					break;
+				}
+				await somes.sleep(100);
+			}
+			if (!metas.length) {
 				history.push('/install');
 				throw Error.new('polkdot wallet needs to be installed');
 			}
 		}
-		return this._account;
+		return this._account as InjectedAccountWithMeta;
 	}
 
 	async getDefaultAccount() {
@@ -255,8 +262,7 @@ export class Substrate {
 		await this.api.isReady;
 
 		if (isSupport()) {
-			if (location.href.indexOf('/install') == -1)
-				await this.getDefaultAccount();
+			await this.getDefaultAccount();
 		}
 	}
 

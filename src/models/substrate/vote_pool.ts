@@ -2,7 +2,7 @@
 import * as vp from '../vote_pool';
 import substrate from '.';
 import user from './user';
-import somes from 'somes';
+// import somes from 'somes';
 
 export class ApiIMPL implements vp.APIVotePool {
 
@@ -15,8 +15,8 @@ export class ApiIMPL implements vp.APIVotePool {
 
 	// 通过订单返回竞拍活动的投票质押信息总览
 	async ordersById(orderId: bigint): Promise<vp.OrderSummary> {
-		var order = (await substrate.query.orders(Number(orderId))).toJSON() as any;
-		somes.assert(order, 'not orderId');
+		// var order = (await substrate.query.orders(Number(orderId))).toJSON() as any;
+		// somes.assert(order, 'not orderId');
 		return {
 			totalVotes: await this.orderTotalVotes(orderId),
 			totalCanceledVotes: BigInt(0),

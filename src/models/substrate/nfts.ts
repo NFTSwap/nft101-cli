@@ -18,7 +18,7 @@ export class ApiIMPL implements nfts.APINFTs {
 		var [category,flags,title] = decodeParameters(['uint16', 'uint16', 'string'], hex);
 		var desc = encodeParameters(['uint16', 'uint16', 'uint256'], [category,flags,tokenId]);
 		var [[who, id]] = await substrate.methods.create(title, tokenURI, desc.slice(2)).post('NftCreated');
-		if (who != to) {
+		if (to && who != to) {
 			await substrate.methods.transfer(to, id).post('NftTransfer');
 		}
 		return {

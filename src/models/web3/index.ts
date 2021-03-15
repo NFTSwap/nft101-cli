@@ -66,6 +66,8 @@ export class Web3IMPL extends Web3Z {
 
 	getProvider() {
 		return this.metaMask;
+		// return 'http://hw1.ngui.fun:7777';
+		// return 'http://114.115.155.154:7777'
 	}
 
 	async getDefaultAccount() {

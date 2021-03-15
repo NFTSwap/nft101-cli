@@ -38,6 +38,7 @@ import Dialog from 'webpkit/lib/dialog';
 import {user,nfts, exchange as ex, encodeParameters} from '../../models';
 import buffer from 'somes/buffer';
 import {rng} from 'somes/rng';
+import * as cfg from '../../../config';
 
 export default class extends Page {
 
@@ -91,7 +92,8 @@ export default class extends Page {
 		try {
 			await Loading.show();
 			this.setState({ new_TokenId: tokenId });
-			await nfts.safeMintURI(token, ex.contractAddress, BigInt(tokenId), uri, data);
+			var r = await nfts.safeMintURI(token, ex.contractAddress, BigInt(tokenId), uri, data);
+			tokenId = String(r.tokenId);
 		} finally {
 			Loading.close();
 		}
@@ -136,24 +138,28 @@ export default class extends Page {
 						<div><button onClick={()=>this._NEWNFT()}>创建</button></div>
 					</div>
 
-					<div className="panel">
-						<div className="txt">
-							<h3>或</h3>
-							<span>现有资产转移到NFTSwap</span>
+					{cfg.platform == 'eth'?
+					<div>
+						<div className="panel">
+							<div className="txt">
+								<h3>或</h3>
+								<span>现有资产转移到NFTSwap</span>
+							</div>
+							ERC721协约：<input ref="erc721" style={{width: '600px'}} /><br /><br />
+							ERC721资产ID：<input ref="erc721_id" style={{width: '600px'}} /><br /><br />
+							ERC721资产名称：<input ref="erc721_name" style={{width: '600px'}} /><br /><br />
+							<div><button onClick={()=>this._NFTSwap()}>转移</button></div>
 						</div>
-						ERC721协约：<input ref="erc721" style={{width: '600px'}} /><br /><br />
-						ERC721资产ID：<input ref="erc721_id" style={{width: '600px'}} /><br /><br />
-						ERC721资产名称：<input ref="erc721_name" style={{width: '600px'}} /><br /><br />
-						<div><button onClick={()=>this._NFTSwap()}>转移</button></div>
-					</div>
 
-					<div className="panel">
-						<div className="txt">
-							<h3>或</h3>
-							<span>将ERC721资产转移到 {ex.contractAddress} 协约 </span>
+						<div className="panel">
+							<div className="txt">
+								<h3>或</h3>
+								<span>将ERC721资产转移到 {ex.contractAddress} 协约 </span>
+							</div>
+							<button onClick={()=>this._Sell()}>转移完成去出售</button>
 						</div>
-						<button onClick={()=>this._Sell()}>转移完成去出售</button>
 					</div>
+					: null}
 
 				</div>
 
