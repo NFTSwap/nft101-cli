@@ -9,9 +9,9 @@ import * as ex from '../exchange';
 
 export class ApiIMPL implements ex.APIExchange {
 
-	private _artifact = artifacts.exchange.api;
+	private get _artifact() {return artifacts.exchange.api }
 
-	contractAddress = artifacts.exchange.address;
+	get contractAddress() { return artifacts.exchange.address }
 
 	async assetSellingOf(token: string, tokenId: bigint): Promise<ex.NFTAsset> {
 		var selling: ex.SellingNFTData | undefined;

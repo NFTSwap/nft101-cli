@@ -4,9 +4,9 @@ import artifacts from './artifacts';
 
 export class ApiIMPL implements vp.APIVotePool {
 
-	contractAddress = artifacts.vote_pool.address;
+	private get _artifact() { return artifacts.vote_pool.api }
 
-	private _artifact = artifacts.vote_pool.api;
+	get contractAddress() { return artifacts.vote_pool.address }
 
 	// 投票最小锁定时间
 	voteLockTime() {

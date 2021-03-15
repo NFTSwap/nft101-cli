@@ -53,6 +53,10 @@ export default class extends Page {
 	};
 
 	async triggerLoad() {
+		await this._fetchData();
+	}
+
+	async _fetchData() {
 		var address = user.addressNoJump();
 		var balanceOf = await ledger.balanceOf(address);
 		var canRelease = await vp.canRelease(address);
@@ -90,7 +94,7 @@ export default class extends Page {
 			if (!ok) return;
 			await Loading.show();
 			await ledger.withdraw(address, BigInt(amount) * BigInt(1e18));
-			Dialog.alert('Withdraw OK', ()=>location.reload());
+			Dialog.alert('Withdraw OK', ()=>this._fetchData());
 		} finally {
 			Loading.close();
 		}
@@ -100,7 +104,7 @@ export default class extends Page {
 		try {
 			await Loading.show();
 			await vp.cancelVote(voteId);
-			Dialog.alert('Cancel Vote OK', ()=>location.reload());
+			Dialog.alert('Cancel Vote OK', ()=>this._fetchData());
 		} finally {
 			Loading.close();
 		}

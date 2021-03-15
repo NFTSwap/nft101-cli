@@ -36,6 +36,7 @@ import { web3Enable, web3Accounts, web3FromSource } from '@polkadot/extension-da
 import * as cfg from '../../../config';
 import {InjectedAccountWithMeta,} from '@polkadot/extension-inject/types';
 import type { ApplyExtrinsicResult } from '@polkadot/types/interfaces';
+import { history } from 'webpkit/lib/router';
 
 const AbiCoder = require('web3-eth-abi');
 const crypto_tx = require('crypto-tx');
@@ -232,10 +233,8 @@ export class Substrate {
 			if (metas.length) {
 				this._account = metas[0];
 			} else {
-				if (location.href.indexOf('/install') == -1) {
-					location.href = '/install';
-				}
-				throw 'Not InjectedAccountWithMeta';
+				history.push('/install');
+				throw Error.new('polkdot wallet needs to be installed');
 			}
 		}
 		return this._account;

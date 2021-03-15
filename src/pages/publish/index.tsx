@@ -53,7 +53,7 @@ export default class extends Page {
 		try {
 			await Loading.show();
 			await nfts.safeTransferFrom(token, address, ex.contractAddress, BigInt(tokenId), data);
-			Dialog.alert('NFT Swap OK', ()=>(location.href = '/mynft'));
+			Dialog.alert('NFT Swap OK', ()=>(this.history.push('/mynft')));
 		} finally {
 			Loading.close();
 		}

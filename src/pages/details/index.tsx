@@ -61,6 +61,10 @@ export default class extends Page<{token: string; tokenId: string}> {
 	}
 
 	async triggerLoad() {
+		await this._fetchData();
+	}
+
+	async _fetchData() {
 		var data = await ex.assetSellingOf(this.params.token, BigInt(this.params.tokenId))
 		var historyBuys = data.selling ? await ex.historyBuys(data.selling.orderId): null;
 		this.setState({ data, historyBuys });
@@ -78,7 +82,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 			if (!ok) return;
 			await Loading.show();
 			await vp.marginVote(selling.orderId, BigInt(value) * BigInt(1e18));
-			Dialog.alert('Vote OK', ()=>location.reload());
+			Dialog.alert('Vote OK', ()=>this._fetchData());
 		} finally {
 			Loading.close();
 		}
@@ -111,7 +115,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 				lifespan: BigInt(lifespan),
 			});
 
-			Dialog.alert('Selling OK', ()=>location.reload());
+			Dialog.alert('Selling OK', ()=>this._fetchData());
 		} finally {
 			Loading.close();
 		}
@@ -126,7 +130,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 			if (!ok) return;
 			await Loading.show();
 			await ex.buy(selling.orderId, BigInt(value) * BigInt(1e18));
-			Dialog.alert('BUY OK', ()=>location.reload());
+			Dialog.alert('BUY OK', ()=>this._fetchData());
 		} finally {
 			Loading.close();
 		}
@@ -138,7 +142,7 @@ export default class extends Page<{token: string; tokenId: string}> {
 			await Loading.show();
 			if (!await ex.tryEndBid(selling.orderId))
 				return Dialog.alert(`It can't end`);
-			location.reload();
+			this._fetchData();
 		} finally {
 			Loading.close();
 		}

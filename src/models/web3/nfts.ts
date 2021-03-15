@@ -6,7 +6,7 @@ import * as nfts from '../nfts';
 
 export class ApiIMPL implements nfts.APINFTs {
 
-	contractAddress = artifacts.nfts.address;
+	get contractAddress() { return artifacts.nfts.address }
 
 	// get token uri
 	tokenURI(token: string, tokenId: bigint): Promise<string> {

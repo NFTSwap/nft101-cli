@@ -5,9 +5,9 @@ import * as ledger from '../ledger';
 
 export class ApiIMPL implements ledger.APILedger {
 
-	private _artifact = artifacts.ledger.api;
+	private get _artifact() { return artifacts.ledger.api }
 
-	contractAddress = artifacts.exchange.address;
+	get contractAddress() { return artifacts.exchange.address }
 
 	// 当前管理eth资产总量
 	totalSupply() {
