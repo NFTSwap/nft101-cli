@@ -1,5 +1,6 @@
 
-import {Address} from 'web3z/solidity_types'
+import {Address} from 'web3z/solidity_types';
+import * as cfg from '../config';
 
 export function isEmptyAddress(address: Address) {
 	return address == '0x0000000000000000000000000000000000000000';
@@ -14,7 +15,7 @@ export function asAddress(address?: Address, defaultValue?: string) {
 }
 
 export function ethRateDollar() {
-	return 1800;
+	return Number(cfg.exchange_rate) || 10;
 }
 
 export function price(eth?: bigint) {
