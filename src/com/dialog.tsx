@@ -28,48 +28,66 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React} from 'webpkit';
-import Nav from '../../com/nav';
-import Footer from '../../com/footer';
-import NftItem from '../../com/nft_item';
-import { exchange as ex, NFTAsset} from '../../models';
-import Loading from '../../com/loading';
+import { React } from 'webpkit';
+import Dialog from 'webpkit/lib/dialog';
 
-export default class extends Page {
+const FORMAT: Dict<string> = {
+	'确定': 'Ok',
+	'取消': 'Cancel',
+}
 
-	state: { assets?: NFTAsset[] } = {};
-	
-	async triggerLoad() {
-		try {
-			await Loading.show();
-			this.setState({ assets: await ex.myNFTs() });
-		} finally {
-			Loading.close();
+export default class extends Dialog {
+
+	protected renderButtons() {
+		var buttons = this.props.buttons || { '@确定': (e)=>{} };
+		var r = [];
+		for (let i in buttons) {
+			var t = i[0] == '@' ? i.substr(1) : i;
+			var cls = i[0] == '@' ? 'btn_ act':'btn_';
+			r.push(
+				<div key={i} className={cls} onClick={()=>this._handleClick_1(buttons[i])}>{FORMAT[t] || t}</div>
+			);
 		}
+		return r;
 	}
 
-	render() {
-		var assets = this.state.assets;
+	protected renderBody() {
+		var props = this.props;
 		return (
-			<div>
-
-				<Nav />
-
-				<div className="page_title">My NFT</div>
-
-				<div className="nft101">
+			<div className="dialog1" >
 				{
-					assets ? assets.length == 0 ? <div className="empty"></div> : assets.map((e,j)=>
-						<NftItem assets={e} key={j} />
-					):
-					// <div>Loading...</div>
-					null
+					props.prompt ?
+					<div>
+						<div className={typeof props.text == 'string' ? 'txt1': ''}>{props.text || ''}</div>
+						{	(()=>{
+							var Input = props.prompt.input;
+							var type = props.prompt.type || 'text';
+							var placeholder = props.prompt.placeholder || '';
+							var inputProps = {
+								ref: 'prompt',
+								placeholder: placeholder,
+								style: {
+									border: 'solid 0.015rem #ccc',
+									width: '90%',
+									marginTop: '0.1rem',
+									height: '0.5rem',
+									padding: '0 2px',
+								} as React.CSSProperties,
+							};
+							return (
+								Input ? 
+								<Input {...inputProps} value={props.prompt.value} type={type} initFocus={true} className="input1" />: 
+								<input {...inputProps} defaultValue={props.prompt.value} type={type} className="input1" />
+							);
+						})()}
+					</div>:
+					<div className={typeof props.text == 'string' ? 'txt1': ''}>{props.text || ''}</div>
 				}
+				<div className="btns_">
+					{this.renderButtons()}
 				</div>
-
-				<Footer />
-
 			</div>
 		);
 	}
+
 }

@@ -228,7 +228,7 @@ export class Substrate {
 
 	async getInjectedAccount() {
 		if (!this._account) {
-			var i = 5;
+			var i = 20;
 			var metas: InjectedAccountWithMeta[] = [];
 			while(i--) {
 				await web3Enable('NFTSwap');
@@ -237,7 +237,7 @@ export class Substrate {
 					this._account = metas[0];
 					break;
 				}
-				await somes.sleep(100);
+				await somes.sleep(200);
 			}
 			if (!metas.length) {
 				history.push('/install');

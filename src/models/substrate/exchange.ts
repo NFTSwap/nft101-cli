@@ -18,6 +18,7 @@ export class ApiIMPL implements ex.APIExchange {
 			tokenURI: url,
 			asset: {
 				owner: owner,
+				artist: 'None',
 				status: orderId === undefined ? ex.AssetStatus.List: ex.AssetStatus.Selling,
 				category: Number(category),
 				flags: Number(flags),
@@ -56,16 +57,22 @@ export class ApiIMPL implements ex.APIExchange {
 	async getNFT101(): Promise<ex.NFTAsset[]> {
 		var keys = await substrate.query.orders.keys();
 		var nfts = [] as ex.NFTAsset[];
+		var count = 0;
 		for (var key of keys) {
-			var orderId = BigInt(Number((key.toHuman() as any)[0]));
-			var order = await this.bids(orderId);
-			var {token, tokenId} = order;
-			var totalVotes = await vp.orderTotalVotes(orderId);
-			if (totalVotes) {
-				nfts.push(await this._assetSellingOf(String(token), tokenId, orderId, order, totalVotes));
+			if (count < 101) {
+				var orderId = BigInt(Number((key.toHuman() as any)[0]));
+				var order = await this.bids(orderId);
+				var {token, tokenId} = order;
+				var totalVotes = await vp.orderTotalVotes(orderId);
+				if (totalVotes) {
+					nfts.push(await this._assetSellingOf(String(token), tokenId, orderId, order, totalVotes));
+				}
+			} else {
+				break;
 			}
+			count++;
 		}
-		return nfts;
+		return nfts.sort((a, b)=>(b.selling as any).totalVotes - (a.selling as any).totalVotes);
 	}
 
 	// 返回我的资产列表

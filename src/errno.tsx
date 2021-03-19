@@ -28,48 +28,34 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React} from 'webpkit';
-import Nav from '../../com/nav';
-import Footer from '../../com/footer';
-import NftItem from '../../com/nft_item';
-import { exchange as ex, NFTAsset} from '../../models';
-import Loading from '../../com/loading';
+import Dialog from './com/dialog';
+import * as React from 'react';
+import * as errno_handles from 'webpkit/lib/errno_handles';
+import somes from 'somes';
 
-export default class extends Page {
+const dialog_handles: Dict<any> = {};
 
-	state: { assets?: NFTAsset[] } = {};
-	
-	async triggerLoad() {
-		try {
-			await Loading.show();
-			this.setState({ assets: await ex.myNFTs() });
-		} finally {
-			Loading.close();
+errno_handles.setErrorHandle(function(e: any) {
+	var err = Error.new(e);
+	var errno = err.errno as number;
+	var text = err.message ? (
+		<span>
+			{err.message}<br/>{err.description}
+		</span>
+	): <span>An unknown exception</span>;
+	if (errno) {
+		if ( !dialog_handles[errno] ) {
+			var dag = Dialog.alert({text}, ()=>{
+				delete dialog_handles[errno];
+			});
+			dialog_handles[errno] = dag;
 		}
+	} else {
+		alert({text});
 	}
+});
 
-	render() {
-		var assets = this.state.assets;
-		return (
-			<div>
+somes.onUncaughtException.on((e)=>errno_handles.default(e.data));
+somes.onUnhandledRejection.on((e)=>errno_handles.default(e.data.reason));
 
-				<Nav />
-
-				<div className="page_title">My NFT</div>
-
-				<div className="nft101">
-				{
-					assets ? assets.length == 0 ? <div className="empty"></div> : assets.map((e,j)=>
-						<NftItem assets={e} key={j} />
-					):
-					// <div>Loading...</div>
-					null
-				}
-				</div>
-
-				<Footer />
-
-			</div>
-		);
-	}
-}
+export default errno_handles.default;

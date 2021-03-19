@@ -41,6 +41,7 @@ export interface SellingNFTData {
 
 export interface Asset {
 	owner: Address;
+	artist: Address;
 	status: AssetStatus;
 	category: number;
 	flags: number;

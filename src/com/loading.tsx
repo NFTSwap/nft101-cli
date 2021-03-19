@@ -28,48 +28,19 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
-import {Page,React} from 'webpkit';
-import Nav from '../../com/nav';
-import Footer from '../../com/footer';
-import NftItem from '../../com/nft_item';
-import { exchange as ex, NFTAsset} from '../../models';
-import Loading from '../../com/loading';
+import { React } from 'webpkit';
+import Loading from 'webpkit/lib/loading';
 
-export default class extends Page {
+export default class extends Loading {
 
-	state: { assets?: NFTAsset[] } = {};
-	
-	async triggerLoad() {
-		try {
-			await Loading.show();
-			this.setState({ assets: await ex.myNFTs() });
-		} finally {
-			Loading.close();
-		}
-	}
-
-	render() {
-		var assets = this.state.assets;
+	renderBody() {
+		var { text } = this.props;
 		return (
-			<div>
-
-				<Nav />
-
-				<div className="page_title">My NFT</div>
-
-				<div className="nft101">
-				{
-					assets ? assets.length == 0 ? <div className="empty"></div> : assets.map((e,j)=>
-						<NftItem assets={e} key={j} />
-					):
-					// <div>Loading...</div>
-					null
-				}
-				</div>
-
-				<Footer />
-
+			<div className="loading" ref="root">
+				<div><span>{text||'Loading..'}</span></div>
 			</div>
 		);
 	}
+
+
 }

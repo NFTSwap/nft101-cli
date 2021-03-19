@@ -28,24 +28,15 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+import './assets/all.css';
+import './errno';
 import { Root,ReactDom,React } from 'webpkit';
 import router from './router';
-import somes from 'somes';
 // import buffer from 'somes/buffer';
 // import {initialize} from './sdk';
 import {initialize} from './models';
-import errno_handles from 'webpkit/lib/errno_handles';
+
 // import {Console} from 'somes/log';
-
-import './assets/bootstrap.css';
-import './assets/font.css';
-import './assets/rc.css';
-import './assets/all.css';
-import './assets/css.css';
-import './assets/all2.scss';
-
-somes.onUncaughtException.on((e)=>errno_handles(e.data));
-somes.onUnhandledRejection.on((e)=>errno_handles(e.data.reason));
 
 // document.documentElement.style.fontSize = '46px';
 // initialize().catch(console.error);

@@ -30,16 +30,19 @@
 
 import {Page,React} from 'webpkit';
 import Nav from '../../com/nav';
+import Footer from '../../com/footer';
 import './index.scss';
 
-export default class extends Page<{a: number}, { a: number }> {
+export default class extends Page {
 
 	render() {
 		return (
-			<div className="body index">
+			<div>
 				<Nav />
-				<h1 style={{ paddingTop: '200px'}}>Welcome to NFTSwap</h1> <br />
-				{/* <Link to="/nft101">Sell</Link> */}
+				<div className="index">
+					<h1>Welcome to NFTSwap</h1> <br />
+				</div>
+				<Footer />
 			</div>
 		);
 	}

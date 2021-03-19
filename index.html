@@ -9,36 +9,39 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" />
 
 	<style type="text/css">
+
 		body {
-			/* overflow: hidden; */
-			/*font-size: 0.2rem;*/
-			/* background: #000; */
 			margin: 0;
 			padding: 0;
 		}
 
-		.init-loading {
-			width: 100%;
-			text-align: center;
+		.loading {
+			position: fixed;
+			width: 100vw;
 			height: 100vh;
-			line-height: 100vh;
-			font-size: 16px;
-			/*color: #fff;*/
+			top: 0;
+			left: 0;
+			z-index: 1;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			/* background-color: rgba(0,0,0,0.2); */
+		}
+
+		.loading div {
+			width: 100px;
+			font-size: 18px;
+			line-height: 18px;
+			text-align: center;
 		}
 
 	</style>
-
-	<!-- <link href="/static/bootstrap.css" rel="stylesheet" />
-	<link href="/static/font.css" rel="stylesheet" media="all" />
-	<link href="/static/rc.css" rel="stylesheet" />
-	<link href="/static/all.css" rel="stylesheet" />
-	<link href="/static/css.css" rel="stylesheet" /> -->
 
 </head>
 
 <body>
 	<div id="app">
-		<div class="init-loading">Loading..</div>
+		<div class="loading"><div><span>Loading..</span</div></div>
 	</div>
 </body>
 

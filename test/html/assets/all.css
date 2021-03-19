@@ -1,4 +1,6 @@
 
+
+
 body {
 	color: #000;
 	margin: 0;
@@ -103,16 +105,10 @@ body {
 	/* justify-content: center; */
 	/* flex-direction: column; */
 	/* align-items: start; */
-	align-content: flex-start;
+	align-content: start;
 	/* border: solid #f00 1px; */
 	width: 1070px;
 	margin: auto;
-}
-
-.nft101 .empty {
-	padding-top: 100px;
-	text-align: center;
-	width: 100%;
 }
 
 .nft_item {
@@ -122,7 +118,6 @@ body {
 	border: solid #000 1px;
 	/* flex: 1; */
 	cursor: pointer;
-	display: block;
 }
 
 .nft_item .img {
@@ -132,7 +127,7 @@ body {
 	overflow: hidden;
 }
 
-.nft_item .img * {
+.nft_item .img img {
 	width: 100%;
 	justify-content: center;
 	align-items: center;
@@ -146,8 +141,6 @@ body {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	white-space: nowrap;
-	color: #000;
-	text-decoration: none;
 }
 
 .nft_item:hover .txt {
@@ -180,7 +173,6 @@ body {
 	padding-top: 4px;
 	font-size: 16px;
 	line-height: 16px;
-	height: 16px;
 	color: #117E52;
 }
 
@@ -222,6 +214,7 @@ body {
 	overflow: hidden;
 	white-space: nowrap;
 }
+
 
 .loading {
 	position: fixed;
@@ -266,8 +259,8 @@ body {
 	margin-bottom: 10px;
 }
 
-/* .dialog { */
-	/* position: fixed;
+.dialog_ {
+	position: fixed;
 	width: 100vw;
 	height: 100vh;
 	top: 0;
@@ -276,10 +269,10 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(0,0,0,0.2); */
-/* } */
+	background-color: rgba(0,0,0,0.2);
+}
 
-.dialog1 {
+.dialog_ .core {
 	width: 446px;
 	border-radius: 10px;
 	background-color: #fff;
@@ -287,16 +280,16 @@ body {
 	box-sizing: border-box;
 }
 
-.dialog1 .txt1 {
+.dialog_ .core .txt1 {
 	font-size: 16px;
 	padding-top: 18px;
 	padding-bottom: 11px;
 	line-height: 13px;
 }
 
-.dialog1 .input1 {
+.dialog_ .core .input1 {
 	width: 354px;
-	height: 45px !important;
+	height: 45px;
 	background-color: #D3D3D3;
 	outline: 0;
 	box-sizing: border-box;
@@ -306,12 +299,12 @@ body {
 	font-size: 16px;
 }
 
-.dialog1 .btns_ {
+.dialog_ .core .btns {
 	padding-top: 38px;
 	display: flex;
 }
 
-.dialog1 .btns_ .btn_ {
+.dialog_ .core .btns .btn_ {
 	width: 157px;
 	height: 50px;
 	box-sizing: border-box;
@@ -329,21 +322,21 @@ body {
 	transition-duration: 0.2s;
 }
 
-.dialog1 .btns_ .btn_.act {
+.dialog_ .core .btns .btn_.act {
 	color: #fff;
 	background-color: #000;
 }
 
-.dialog1 .btns_ .btn_:active {
+.dialog_ .core .btns .btn_:active {
 	opacity: 0.7;
 	background-color: #ddd;
 }
 
-.dialog1 .btns_ .btn_.act:active {
+.dialog_ .core .btns .btn_.act:active {
 	opacity: 0.7;
 	background-color: #000;
 }
 
-.dialog1 .btns_ .btn_:last-child {
+.dialog_ .core .btns .btn_:last-child {
 	margin-right: 0;
 }

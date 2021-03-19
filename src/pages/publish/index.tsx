@@ -29,16 +29,18 @@
  * ***** END LICENSE BLOCK ***** */
 
 import {Page,React, Link} from 'webpkit';
+import somes from 'somes';
 import Nav from '../../com/nav';
 import Footer from '../../com/footer';
-import './index.scss';
-import Loading from 'webpkit/lib/loading';
-import Dialog from 'webpkit/lib/dialog';
+import Loading from '../../com/loading';
+import Dialog from '../../com/dialog';
 // import web3 from '../../models/eth/web3';
 import {user,nfts, exchange as ex, encodeParameters} from '../../models';
 import buffer from 'somes/buffer';
 import {rng} from 'somes/rng';
 import * as cfg from '../../../config';
+import './index.scss';
+import '../../assets/publish.css';
 
 export default class extends Page {
 
@@ -70,7 +72,7 @@ export default class extends Page {
 			Dialog.confirm({
 				text: (
 					<div>
-						<div>转移完成，现在就去出售?</div>
+						<div>Transfer complete, sell now?</div>
 					</div>
 				)
 			}, ok=>r(ok));
@@ -84,6 +86,9 @@ export default class extends Page {
 		var tokenId = '0x' + rng(32).toString('hex');
 		var name = (this.refs.nft_name as HTMLInputElement).value;
 		var uri = (this.refs.nft_uri as HTMLInputElement).value;
+
+		somes.assert(name, 'Invalid name');
+		somes.assert(uri, 'Invalid URI');
 		var data_str = encodeParameters(
 			['uint16', 'uint16', 'string'], [0, 0, name]
 		);
@@ -102,7 +107,7 @@ export default class extends Page {
 			Dialog.confirm({
 				text: (
 					<div>
-						<div>创建成功，现在就去出售?</div>
+						<div>Create success, sell now?</div>
 					</div>
 				)
 			}, ok=>r(ok));
@@ -114,39 +119,34 @@ export default class extends Page {
 	_Sell() {
 		this.history.push('/mynft');
 	}
-	
+
 	render() {
 		return (
-			<div className="marketplace-page app-page sell">
+			<div>
 				<Nav />
 
-				<div className="container">
-					<div className="row">
-						<div className="col-md-12">
-							<h1 className="marketplace__title">Publish</h1>
-						</div>
+				<div className="pub">
+					<div className="txt1">PUBLISH</div>
+					<div className="txt2">
+						<div>Create new NFT assets</div>
 					</div>
 
-					<div className="panel" style={{border: 'none'}}>
-						<div className="txt">
-							<span>创建新的NFT资产</span>
-						</div>
-						{cfg.platform == 'eth'?<div>
-							ERC721协约：{ex.contractAddress}<br /><br />
-							ERC721资产ID：{this.state.new_TokenId}<br /><br />
-							ERC721资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
-							ERC721资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
-						</div>: <div>
-							{/* NFT资产ID：{this.state.new_TokenId}<br /><br /> */}
-							NFT资产名称：<input ref="nft_name" style={{width: '600px'}} /><br /><br />
-							NFT资产URI：<input ref="nft_uri" style={{width: '600px'}} /><br /><br />
-						</div>
-						}
-						<div><button onClick={()=>this._NEWNFT()}>Create</button></div>
+					<div className="input1">
+						<div>NFT Assets name</div>
+						<input ref="nft_name" />
+					</div>
+					<div className="input1">
+						<div>NFT Assets URI</div>
+						<input ref="nft_uri" />
 					</div>
 
-					{cfg.platform == 'eth'?
-					<div>
+					<div className="btns">
+						<div className="btn" onClick={()=>this._NEWNFT()}>CREATE</div>
+					</div>
+				</div>
+
+				{cfg.platform == 'eth'?
+					<div className="sell">
 						<div className="panel">
 							<div className="txt">
 								<h3>或</h3>
@@ -166,9 +166,8 @@ export default class extends Page {
 							<button onClick={()=>this._Sell()}>转移完成去出售</button>
 						</div>
 					</div>
-					: null}
-
-				</div>
+					: null
+				}
 
 				<Footer/>
 
