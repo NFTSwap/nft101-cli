@@ -28,6 +28,7 @@
  *
  * ***** END LICENSE BLOCK ***** */
 
+import './assets/font.css';
 import './assets/all.css';
 import './errno';
 import { Root,ReactDom,React } from 'webpkit';
