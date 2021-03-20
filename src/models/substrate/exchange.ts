@@ -72,7 +72,7 @@ export class ApiIMPL implements ex.APIExchange {
 			}
 			count++;
 		}
-		return nfts.sort((a, b)=>(b.selling as any).totalVotes - (a.selling as any).totalVotes);
+		return nfts.sort((a, b)=>Number((b.selling as any).totalVotes - (a.selling as any).totalVotes));
 	}
 
 	// 返回我的资产列表
