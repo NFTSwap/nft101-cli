@@ -44,10 +44,8 @@ import {initialize} from './models';
 // Console.defaultInstance.log('init ok');
 
 initialize().then(()=>{
-	ReactDom.render(
-		<Root routes={router} />,
-		document.querySelector('#app')
-	);
+
+	ReactDom.render(<Root routes={router} />, document.querySelector('#app'));
 
 	if (process.env.NODE_ENV == 'development') {
 		import('../test/test');

@@ -87,14 +87,14 @@ export class Web3IMPL extends Web3Z {
 	}
 
 	async initialize() {
-		if (isSupport()) {
+		if (await isSupport()) {
 			await this.getDefaultAccount();
 		}
 	}
 
 }
 
-export function isSupport() {
+export async function isSupport() {
 	return !!(globalThis as any).ethereum;
 }
 

@@ -226,9 +226,18 @@ export class Substrate {
 		return new LazySigner(injected.signer, account.address);
 	}
 
+	async isSupport() {
+		try {
+			await web3Enable('NFTSwap');
+			var metas = await web3Accounts();
+			return !!metas.length;
+		} catch(e) {}
+		return false;
+	}
+
 	async getInjectedAccount() {
 		if (!this._account) {
-			var i = 20;
+			var i = 10;
 			var metas: InjectedAccountWithMeta[] = [];
 			while(i--) {
 				await web3Enable('NFTSwap');
@@ -241,7 +250,7 @@ export class Substrate {
 			}
 			if (!metas.length) {
 				history.push('/install');
-				throw Error.new('polkdot wallet needs to be installed');
+				throw Error.new('polkdot wallet needs to be installed and create an account');
 			}
 		}
 		return this._account as InjectedAccountWithMeta;
@@ -261,7 +270,7 @@ export class Substrate {
 
 		await this.api.isReady;
 
-		if (isSupport()) {
+		if (await isSupport()) {
 			await this.getDefaultAccount();
 		}
 	}
@@ -269,7 +278,9 @@ export class Substrate {
 }
 
 export function isSupport() {
-	return !!(globalThis as any).injectedWeb3;
+	return _default.isSupport();
 }
 
-export default new Substrate;
+const _default = new Substrate;
+
+export default _default;
