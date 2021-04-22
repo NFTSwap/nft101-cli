@@ -5,10 +5,17 @@ import test_mod from './test-mod';
 import test_substrate from './test-substrate';
 import test_substrate2 from './test-substrate2';
 import * as cfg from '../config';
+import {encodeParameters} from '../src/models';
 // require('./test-tx').default();
 // require('./test-metamask').default();
 
 async function test() {
+
+
+	debugger
+	var str = encodeParameters(['address', 'uint256'], ['0x00', 1]);
+
+	debugger
 
 	if (cfg.platform == 'eth') {
 		// await test_sol();
